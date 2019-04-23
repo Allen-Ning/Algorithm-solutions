@@ -21,3 +21,5 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 //         2k=a+b+r2(b+c)=2a+2b+2r1(b+c)
 //         (b+c)(r2-2r1)=a+b => (b+c)n=a+b
 //         a=(n-1)b+nc=(n-1)(b+c)+c which means when slow moves (n-1) cycles and c, start moves a
+
+31. https://www.cnblogs.com/yuzhangcmu/p/4221998.html

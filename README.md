@@ -23,3 +23,5 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 //         a=(n-1)b+nc=(n-1)(b+c)+c which means when slow moves (n-1) cycles and c, start moves a
 
 31. https://www.cnblogs.com/yuzhangcmu/p/4221998.html
+
+135. https://leetcode.com/problems/candy/discuss/42774/Very-Simple-Java-Solution-with-detail-explanation (grahp on note book)

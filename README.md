@@ -25,3 +25,7 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 31. https://www.cnblogs.com/yuzhangcmu/p/4221998.html
 
 135. https://leetcode.com/problems/candy/discuss/42774/Very-Simple-Java-Solution-with-detail-explanation (grahp on note book)
+
+319. 1.https://blog.csdn.net/baidu_23318869/article/details/50386323
+     2.https://blog.csdn.net/qq508618087/article/details/50517503
+

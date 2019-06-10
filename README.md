@@ -29,3 +29,4 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 319. 1.https://blog.csdn.net/baidu_23318869/article/details/50386323
      2.https://blog.csdn.net/qq508618087/article/details/50517503
 
+322. qustion 322 and question 279 are done by the same way

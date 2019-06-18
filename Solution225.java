@@ -1,3 +1,5 @@
+// Queue methods 
+// poll, remove, offer
 class MyStack {
 
     Queue<Integer> list;

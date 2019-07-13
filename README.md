@@ -32,3 +32,25 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 322. qustion 322 and question 279 are done by the same way
 
 331. https://blog.csdn.net/fuxuemingzhu/article/details/79537797
+
+Knowledge
+1. change 1 bit from 0 (1) to 1 (0)
+1.1
+  xxxxxxxxxxxxx0xxx
+^ 00000000000001000
+----------------------
+  xxxxxxxxxxxxx1xxx
+
+1.2
+  xxxxxxxxxxxxx1xxx
+^ 00000000000001000
+----------------------
+  xxxxxxxxxxxxx0xxx
+
+1.2 change 2 bits from 0s (1s) to 1s (0s)
+  xxxx1xxxxxxxx0xxx
+^ 00001000000001000
+----------------------
+  xxxx0xxxxxxxx1xxx
+
+

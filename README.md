@@ -33,6 +33,8 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 
 331. https://blog.csdn.net/fuxuemingzhu/article/details/79537797
 
+421. https://kingsfish.github.io/2017/12/15/Leetcode-421-Maximum-XOR-of-Two-Numbers-in-an-Array/
+
 Knowledge
 1. change 1 bit from 0 (1) to 1 (0)
 1.1
@@ -52,5 +54,11 @@ Knowledge
 ^ 00001000000001000
 ----------------------
   xxxx0xxxxxxxx1xxx
+
+2. if a ^ b = x
+   -> a ^ x = b;
+   -> x ^ a = b;
+   -> b ^ x = a;
+   -> x ^ b = a;
 
 

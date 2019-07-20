@@ -8,29 +8,22 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists == null || lists.length == 0) return null;
         ListNode dummy = new ListNode(0);
         ListNode currentNode = dummy;
-        while (currentNode != null) {
-            ListNode minNode = null;
-            int count = -1;
-            for (int i = 0; i < lists.length; i++) {
-                ListNode node = lists[i];
-                if (node == null) continue;
-                if (minNode == null || node.val < minNode.val) {
-                    minNode = node;
-                    count = i;
-                }
-            }
-            if (minNode != null && count >= 0) {
-                lists[count] = minNode.next;
-                minNode.next = null;
-            }
 
-            currentNode.next = minNode;
-            currentNode = minNode;
+        PriorityQueue<ListNode> queue = new PriorityQueue<>((a, b) -> (a.val - b.val));
+
+        // heapify the lists
+        for (int i = 0; i < lists.length; i++) {
+            if (lists[i] != null) queue.offer(lists[i]);
+        }
+
+        while (!queue.isEmpty()) {
+            ListNode node = queue.poll();
+            if (node.next != null) queue.offer(node.next);
+            currentNode.next = node;
+            currentNode = node;
         }
         return dummy.next;
-        
     }
 }

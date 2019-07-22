@@ -15,4 +15,22 @@ class Solution {
         }
         return reminder;
     }
+
+    //      /  0             (n == 0)
+    // dr(n) = { 9           (n != 0 && n % 9 == 0)
+    //      \ n % 9          (n % 9 != 0)
+
+    // equals to
+
+    // dr(n) = 1 + (n - 1) % 9
+    // time complexity o(1)
+    public int addDigits2(int num) {
+        if (num == 0) return 0;
+
+        if (num % 9 == 0) {
+            return 9;
+        } else {
+            return num % 9;
+        }
+    }
 }

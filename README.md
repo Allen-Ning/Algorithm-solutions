@@ -26,6 +26,9 @@ https://leetcode.com/problems/linked-list-cycle-ii/discuss/44793/O(n)-solution-b
 
 135. https://leetcode.com/problems/candy/discuss/42774/Very-Simple-Java-Solution-with-detail-explanation (grahp on note book)
 
+239. http://www.yikanggao.com/blog/2017/07/%E8%AE%A4%E8%AF%86%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97.html
+     https://www.tutorialspoint.com/java/util/java_util_arraydeque.htm
+
 319. 1.https://blog.csdn.net/baidu_23318869/article/details/50386323
      2.https://blog.csdn.net/qq508618087/article/details/50517503
 

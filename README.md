@@ -64,4 +64,8 @@ Knowledge
    -> b ^ x = a;
    -> x ^ b = a;
 
+3. a ^ a = 0
+   b ^ 0 = b
+   b ^ a ^ a = b
+
 

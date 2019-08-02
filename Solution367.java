@@ -5,6 +5,7 @@ class Solution {
         long end = num + 1;
         long target = num;
         while (start < end) {
+            // trick - this could be overflow
             long mid = start + (end - start) / 2;
             long value = mid * mid;
             if (value == target) { 

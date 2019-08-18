@@ -21,56 +21,33 @@ class LFUCache {
         
         valueWithSameFrequency.get(currentFrequence).remove(key);
         if (currentFrequence == min && valueWithSameFrequency.get(currentFrequence).size() == 0) min++;
-        if (valueWithSameFrequency.containsKey(nextFrequence)) {
-            valueWithSameFrequency.get(nextFrequence).add(key);
-        } else {
-            LinkedHashSet<Integer> set = new LinkedHashSet();
-            set.add(key);
-            valueWithSameFrequency.put(nextFrequence, set);
-        }
-
+        
+        if (!valueWithSameFrequency.containsKey(nextFrequence)) valueWithSameFrequency.put(nextFrequence, new LinkedHashSet());
+        valueWithSameFrequency.get(nextFrequence).add(key);
         return map.get(key);
     }
-    
+
     public void put(int key, int value) {
-        if (capacity == 0) return;
-        if (!map.containsKey(key)) {
-
-            if (map.size() == capacity) {
-                int removedKey = valueWithSameFrequency.get(min).iterator().next();
-                valueWithSameFrequency.get(min).remove(removedKey);
-                map.remove(removedKey);
-                frequence.remove(removedKey);
-            }
-
+        if (capacity <= 0) return;
+        if (map.containsKey(key)) {
             map.put(key, value);
-            frequence.put(key, 1);
-            LinkedHashSet<Integer> set;
-            if (valueWithSameFrequency.containsKey(1)) {
-                valueWithSameFrequency.get(1).add(key);
-            } else {
-                set = new LinkedHashSet();
-                set.add(key);
-                valueWithSameFrequency.put(1, set);
-            }
-            min = 1;
+            get(key);
             return;
         }
 
-        int currentFrequence = frequence.get(key);
-        int nextFrequence = frequence.get(key) + 1;
-        frequence.put(key, nextFrequence);
-        map.put(key, value);
-        valueWithSameFrequency.get(currentFrequence).remove(key);
-        if (currentFrequence == min && valueWithSameFrequency.get(currentFrequence).size() == 0) min++;
-
-        if (valueWithSameFrequency.containsKey(nextFrequence)) {
-            valueWithSameFrequency.get(nextFrequence).add(key); 
-        } else {
-            LinkedHashSet<Integer> set = new LinkedHashSet();
-            set.add(key);
-            valueWithSameFrequency.put(nextFrequence, set);
+        if (map.size() == capacity) {
+            int removedKey = valueWithSameFrequency.get(min).iterator().next();
+            valueWithSameFrequency.get(min).remove(removedKey);
+            map.remove(removedKey);
+            frequence.remove(removedKey);
         }
+
+        map.put(key, value);
+        frequence.put(key, 1);
+        if (!valueWithSameFrequency.containsKey(1)) valueWithSameFrequency.put(1, new LinkedHashSet());
+        valueWithSameFrequency.get(1).add(key);
+        min = 1;
+        return;
     }
 }
 

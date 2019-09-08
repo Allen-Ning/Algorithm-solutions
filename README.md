@@ -74,3 +74,5 @@ Knowledge
 
 376. Wiggle Subsequence
 https://hackmd.io/HF9EOCxYSdmaQrgSBE-19Q
+
+560. similar to question 1 (2 sum)

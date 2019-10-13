@@ -24,30 +24,24 @@ class Solution {
 
         int[] results = new int[numCourses];
         int counter = 0;
-        int index = findZeroIndegree(indegrees, visited);
-        while (index != -1) {
-            results[counter] = index;
-            visited[index] = true;
-            List<Integer> list = map.get(index);
-            if (list != null && list.size() > 0) {
-                for (int num : list) indegrees[num] -= 1;
-            }
-            
-            index = findZeroIndegree(indegrees, visited);
-            counter++;
-        }
-        
+        Queue<Integer> queue = new LinkedList();
         for (int i = 0; i < indegrees.length; i++) {
-            if (indegrees[i] > 0) return new int[0];
+            if (indegrees[i] == 0) queue.offer(i);
         }
-        return results;
-    }
+        while (queue.size() > 0) {
+            int preCourse = queue.poll();
+            results[counter] = preCourse;
+            counter++;
 
-    private int findZeroIndegree(int[] indegrees, boolean[] visited) {
-        int i = 0;
-        for (i = 0; i < indegrees.length; i++) {
-            if (!visited[i] && indegrees[i] == 0 ) return i;
+            if (!map.containsKey(preCourse)) continue;
+            List<Integer> courses = map.get(preCourse);
+            for (int course : courses) {
+                indegrees[course] -= 1;
+                if (indegrees[course] == 0) {
+                    queue.add(course);
+                }
+            }
         }
-        return -1;
+        return counter == numCourses ?  results : new int[0];
     }
 }

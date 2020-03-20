@@ -9,12 +9,12 @@ class Solution {
 
         buyable[0] = 0;
         sellable[0] = -prices[0];
-        int result = 0;
         for (int i = 1; i < prices.length; i++) {
             buyable[i] = Math.max(sellable[i - 1] + prices[i] - fee, buyable[i- 1]);
             sellable[i] = Math.max(buyable[i- 1] - prices[i], sellable[i - 1]);
-            result = Math.max(result, Math.max(buyable[i], sellable[i]));
         }
-        return result;
+        // trick -> buyable[i] always larger than buyable[i - 1]
+        //          sellable[i] always larger than sellable[i - 1]
+        return Math.max(buyable[prices.length - 1], sellable[prices.length - 1]);
     }
 }

@@ -10,15 +10,19 @@ class Solution {
         startSet.add(beginWord);
         // trick -> endWord must in wordlist
         if (checked.contains(endWord)) endSet.add(endWord);
-        Set<String> visited = new HashSet();
         int step = 1;
         while (startSet.size() > 0 && endSet.size() > 0) {
+
             // trick -> only use the smaller set as the startSet
             if (startSet.size() > endSet.size()) {
                 Set<String> set = startSet;
                 startSet = endSet;
                 endSet = set;
             }
+
+            // trick -> this will decrease the running time a lot due to not check against
+            //          the visited nodes
+            checked.removeAll(startSet);
 
             // trick -> need to create a new set for each run
             Set<String> temp = new HashSet();
@@ -30,7 +34,7 @@ class Solution {
                         sb.setCharAt(i, j);
                         String newValue = sb.toString();
                         if (endSet.contains(newValue)) return step + 1;
-                        if (checked.contains(newValue) && visited.add(newValue)) temp.add(newValue);
+                        if (checked.contains(newValue)) temp.add(newValue);
                     }
                 }
             }

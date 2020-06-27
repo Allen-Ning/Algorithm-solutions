@@ -59,4 +59,35 @@ class Solution {
         return (int) result;
     }
 
+    public int maxProfitK(int[] prices) {
+        int days = prices.length + 1;
+        int numOfTransations = 3;
+        int numOfStatuses = 2;
+
+        // trick -> dp only save data for the current day
+        long[][] dp = new long[numOfTransations][numOfStatuses];
+        // trick -> preDp is used for dp compression
+        long[][] preDp = new long[numOfTransations][numOfStatuses];
+        long result = 0;
+
+        // trick -> setup when day_0 dp
+        //          Integer.MIN_VALUE means not reachable
+        for (int i = 0; i < dp.length; i++) {
+            Arrays.fill(preDp[i], Integer.MIN_VALUE);
+        }
+        preDp[0][0] = 0;
+
+        for (int i = 1; i < days; i++) {
+            int price = prices[i - 1];
+            for (int j = 0; j < numOfTransations; j++) {
+                // k transaction, day: i, current status: buyable
+                dp[j][0] = j == 0 ? preDp[j][0] : Math.max(preDp[j - 1][1] + price, preDp[j][0]);
+                // k transaction, day: i, current status: sellable
+                dp[j][1] = Math.max(dp[j][0] - price, preDp[j][1]);
+                result = Math.max(result, Math.max(dp[j][0], dp[j][1]));
+            }
+            preDp = dp;
+        }
+        return (int) result;
+    }
 }

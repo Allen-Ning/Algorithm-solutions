@@ -3,8 +3,11 @@ class Solution {
         // trick -> handle special case
         if (N >= 8 && N <= 11) return 11;
 
+        int length = String.valueOf(N).length();
+        int start = (int) Math.pow(10, length / 2);
+
         // trick -> get all available palindrone and then check prime
-        for (int i = 1; i < 100_000; i++) {
+        for (int i = start; i < 20_000; i++) {
             StringBuilder sb = new StringBuilder();
             sb.append(i);
             // trick -> when num like 123321 -> pattern like abccba (which should be ignored) cos it will always be dividable by 11

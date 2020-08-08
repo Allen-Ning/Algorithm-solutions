@@ -1,6 +1,20 @@
 class Solution {
     // no implementation trick
     // we need to better use the condition -> two sorted array to reduce time complexity
+    // trick -> we cannot simpliy use greedy way like k-way-merge or only 4 pointers in o(n) due to the example below
+    //          [-10,-4,0,0,6]
+    //          [3,5,6,7,8,100]
+    //          10
+    //          Output:
+    //          [[-10,3],[-10,5],[-10,6],[-10,7],[-10,8],[-4,3],[0,3],[0,3],[6,3],[-4,5]]
+    //          Expected:
+    //          [[-10,3],[-10,5],[-10,6],[-10,7],[-10,8],[-4,3],[-4,5],[-4,6],[0,3],[0,3]]
+    //          bascially (-10, 100) is the blocker, it will blick (-4, x) to be picked
+    //
+    //          in general
+    //          [a, b, c]
+    //          [d, e, f]
+    //          a + f might not be smaller than b + e or c + e
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         List<List<Integer>> results = new ArrayList();
         if (nums1 == null || nums1.length == 0 || nums2 == null || nums2.length == 0 || k == 0) return results;

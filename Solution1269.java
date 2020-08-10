@@ -8,7 +8,8 @@ class Solution {
         dp[0][0] = 1;
 
         // trick -> this is actually smaller than Integer.MAX_VALUE
-        int mod = (int) (Math.pow(10, 9) + 7);
+        //          (1e9 + 7) is same as Math.pow(10, 9) + 1
+        int mod = (int) (1e9 + 7);
         for (int i = 1; i < dp.length; i++) {
             for (int j = 0; j < dp[i].length; j++) {
                 dp[i][j] += (dp[i - 1][j] % mod);

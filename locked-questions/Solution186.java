@@ -1,8 +1,4 @@
 public class Solution {
-    /**
-     * @param str: a string
-     * @return: return a string
-     */
     public char[] reverseWords(char[] str) {
         reverse(str, 0, str.length - 1);
 
@@ -18,6 +14,7 @@ public class Solution {
             start = end + 1;
             end++;
         }
+        // trick -> this is to swop for the last word(which also needs to be handled)
         reverse(str, start, end - 1);
         return str;
     }

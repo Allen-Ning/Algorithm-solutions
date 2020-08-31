@@ -1,9 +1,9 @@
 public class Solution {
-    // trick -> this code is not ac and might be wrong solution
+    // NOTICE -> this code has not AC, which needs to be double check by lc
     public boolean verifyPreorder(int[] preorder) {
         return helper(preorder, 0, preorder.length - 1);
     }
-
+    
     private boolean helper(int[] data, int start, int end) {
         if (data.length <= 1) return true;
 

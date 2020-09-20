@@ -1,5 +1,5 @@
 public class Solution {
-    // trick -> not ac, migth need to double check
+    // trick -> not ac, might need to double check
     public int shortestDistance(int[][] maze, int[] start, int[] destination) {
         Queue<int[]> queue = new LinkedList();
         boolean[][][][] isVisited = new boolean[maze.length][maze[0].length][3][3];

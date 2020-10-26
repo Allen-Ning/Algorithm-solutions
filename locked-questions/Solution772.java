@@ -7,7 +7,7 @@ public class Solution {
             char c = s.charAt(i);
             if (c >= '0' && c <= '9') {
                 value = value * 10 + (c - '0');
-                if (i == s.length() - 1 || 
+                if (i == s.length() - 1 ||
                    (i + 1 < s.length() && (s.charAt(i + 1) < '0' || s.charAt(i + 1) > '9'))) {
                        value = getValue(stack, value);
                        if (value != 0) stack.push(String.valueOf(value));

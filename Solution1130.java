@@ -31,4 +31,24 @@ class Solution {
         }
         return results;
     }
+
+    // Stack O(n)
+    public int mctFromLeafValues2(int[] array) {
+        Stack<Integer> stack = new Stack();
+        // trick -> this is pre-set value so that all values [0, array.length - 2] in array have left value and right value
+        stack.push(Integer.MAX_VALUE);
+        int result = 0;
+        for (int i = 0; i < array.length; i++) {
+            // trick -> this is to keep a decreasing monotone stack
+            while (stack.peek() <= array[i]) {
+                int drop = stack.pop();
+                result += drop * Math.min(stack.peek(), array[i]);
+            }
+            stack.push(array[i]);
+        }
+
+        // trick -> Integer.MAX_VALUE will always keep in the stack
+        while (stack.size() > 2) result += stack.pop() * stack.peek();
+        return result;
+    }
 }

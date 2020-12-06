@@ -22,6 +22,9 @@ class Solution {
 
     private int[] search(String S, char[] data, int d) {
         // trick -> the most tricketst part fot this question is to use mod
+        // trick -> this is question, mod could introduce hash collision, which can be resolved by one of them above:
+        //          1. we can add one hash table with key: custom hashcode (Integer), value: selected subtrings (LinkedList<String>) as value to avoid hash collision
+        //          2. we can add one more hash function to avoid hash collision, e.g. sumup all letter values (one of the naive way)
         long mod = (long) Math.pow(2, 34);
         // include d letters
         Set<Long> set = new HashSet();

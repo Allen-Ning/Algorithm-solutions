@@ -1,28 +1,13 @@
-/**
- * Definition of Interval:
- * public class Interval {
- *     int start, end;
- *     Interval(int start, int end) {
- *         this.start = start;
- *         this.end = end;
- *     }
- * }
- */
-
 public class Solution {
-    /**
-     * @param intervals: an array of meeting time intervals
-     * @return: if a person could attend all meetings
-     */
-    public boolean canAttendMeetings(List<Interval> intervals) {
+    public boolean canAttendMeetings(int[][] intervals) {
         // trick -> this is to handle special case intervals is empty
-        if (intervals.size() == 0) return true;
+        if (intervals.length == 0) return true;
 
-        Collections.sort(intervals, (a, b) -> a.start - b.start);
-        Interval prev = intervals.get(0);
-        for (int i = 1; i < intervals.size(); i++) {
-            Interval current = intervals.get(i);
-            if (prev.end > current.start) return false;
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        int[] prev = intervals[0];
+        for (int i = 1; i < intervals.length; i++) {
+            int[] current = intervals[i];
+            if (prev[1] > current[0]) return false;
             prev = current;
         }
         return true;

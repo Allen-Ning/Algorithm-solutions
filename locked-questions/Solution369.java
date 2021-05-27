@@ -11,10 +11,6 @@
  */
 
 public class Solution {
-    /**
-     * @param head: the first Node
-     * @return: the answer after plus one
-     */
     public ListNode plusOne(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;

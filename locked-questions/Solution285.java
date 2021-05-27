@@ -9,11 +9,6 @@
  */
 
 public class Solution {
-    /*
-     * @param root: The root of the BST.
-     * @param p: You need find the successor node of p.
-     * @return: Successor of p.
-     */
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
         return helper(root, p, new boolean[] { false });
     }

@@ -2,6 +2,8 @@ class NumMatrix {
 
     FenwickTree[] trees;
     int[][] matrix;
+
+    // TODO this might not be the best solution
     public NumMatrix(int[][] matrix) {
         this.matrix = matrix;
         trees = new FenwickTree[matrix.length];

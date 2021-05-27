@@ -1,4 +1,5 @@
 public class Solution {
+    // TODO this might not be the best solution
     public int minTotalDistance(int[][] grid) {
         List<Integer> xAxisProject = new ArrayList();
         List<Integer> yAxisProject = new ArrayList();

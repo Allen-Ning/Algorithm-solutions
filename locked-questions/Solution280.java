@@ -1,9 +1,6 @@
 public class Solution {
-    /*
-     * @param nums: A list of integers
-     * @return: nothing
-     */
     public void wiggleSort(int[] nums) {
+        // TODO not the best solution
         Arrays.sort(nums);
         // trick -> e.g.
         //  0  1  2  3  4  5  6  7

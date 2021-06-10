@@ -4,7 +4,7 @@ class Logger {
 
     /** Initialize your data structure here. */
     public Logger() {
-        this.map = new HashMap();
+        map = new HashMap();
     }
 
     /** Returns true if the message should be printed in the given timestamp, otherwise returns false.

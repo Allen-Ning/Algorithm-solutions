@@ -4,13 +4,13 @@ class HitCounter {
 
     /** Initialize your data structure here. */
     public HitCounter() {
-        this.queue = new LinkedList();
+        queue = new LinkedList();
     }
 
     /** Record a hit.
         @param timestamp - The current timestamp (in seconds granularity). */
     public void hit(int timestamp) {
-        this.queue.offer(timestamp);
+        queue.offer(timestamp);
     }
 
     /** Return the number of hits in the past 5 minutes.
@@ -18,9 +18,9 @@ class HitCounter {
     public int getHits(int timestamp) {
         int expiredTimestamp = timestamp - 300;
         while (this.queue.size() > 0 && this.queue.peek() <= expiredTimestamp) {
-            this.queue.poll();
+            queue.poll();
         }
-        return this.queue.size();
+        return queue.size();
     }
 }
 

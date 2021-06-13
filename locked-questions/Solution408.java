@@ -1,35 +1,31 @@
-public class Solution {
-    /**
-     * @param word: a non-empty string
-     * @param abbr: an abbreviation
-     * @return: true if string matches with the given abbr or false
-     */
+class Solution {
     public boolean validWordAbbreviation(String word, String abbr) {
-        int p = 0;
         int i = 0;
-        while (i < abbr.length()) {
-            char c = abbr.charAt(i);
-            if (c >= 'a' && c <= 'z') {
-                if (p >= word.length()) return false;
-                if (abbr.charAt(i) != word.charAt(p)) return false;
-                p++;
-                i++;
-            } else {
-                int num = 0;
-                while (c >= '0' && c <= '9') {
-                    num = num * 10 + c - '0';
-                    // trick -> check against leading zero
-                    //          "01" -> "a", expected false
-                    if (num == 0) return false;
+        int j = 0;
 
-                    i++;
-                    if (i >= abbr.length()) break;
-                    c = abbr.charAt(i);
-                }
-                p += num;
+        while (i < abbr.length() && j < word.length()) {
+            char c = abbr.charAt(i);
+            if (c == word.charAt(j)) {
+                i++;
+                j++;
+                continue;
             }
+
+            if (c >= 'a' && c <= 'z') return false;
+            if (c == '0') return false;
+
+            int num = 0;
+            while (i < abbr.length()) {
+                c = abbr.charAt(i); 
+                if (c < '0' || c > '9') break;
+
+                num = num * 10 + c - '0';
+                i++;
+            }
+            j += num;
         }
-        if (p != word.length()) return false;
+
+        if (i != abbr.length() || j != word.length()) return false;
         return true;
     }
 }

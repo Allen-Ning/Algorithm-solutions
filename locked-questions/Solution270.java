@@ -17,7 +17,7 @@ public class Solution {
      * @return: the value in the BST that is closest to the target
      */
     public int closestValue(TreeNode root, double target) {
-        int[] result = new int[] { 0 };
+        int[] result = new int[] { root.val };
         helper(root, target, result);
         return result[0];
     }

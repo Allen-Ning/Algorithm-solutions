@@ -45,18 +45,23 @@ class MaxStack {
 
     public void push(int x) {
         Node node = new Node(x, ++size);
+
         tail.next = node;
         node.prev = tail;
         tail = node;
+
         set.add(node);
     }
 
     public int pop() {
         Node node = tail;
         Node prev = node.prev;
+
         prev.next = null;
         node.prev = null;
+
         tail = prev;
+
         set.remove(node);
         size--;
         return node.value;
@@ -75,11 +80,14 @@ class MaxStack {
         Node node = set.pollFirst();
         Node prev = node.prev;
         Node next = node.next;
+
         if (prev != null) prev.next = next;
         if (next != null) next.prev = prev;
+
         node.prev = null;
         node.next = null;
-        tail = prev;
+
+        if (node == tail) tail = prev;
         return node.value;
     }
 }

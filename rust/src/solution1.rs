@@ -1,5 +1,4 @@
-struct Solution {}
-
+use crate::common::Solution;
 use std::collections::HashMap;
 
 impl Solution {

@@ -1,3 +1,5 @@
+use crate::common::Solution;
+
 impl Solution {
     pub fn are_almost_equal(s1: String, s2: String) -> bool {
         let mut total = 0;

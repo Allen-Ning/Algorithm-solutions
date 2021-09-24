@@ -1,5 +1,6 @@
 // mod solution1;
 // mod solution21;
+// mod solution94;
 // mod solution100;
 // mod solution876;
 // mod solution1290;

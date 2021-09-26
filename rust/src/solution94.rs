@@ -32,7 +32,7 @@ impl Solution {
         match node {
             None =>(),
             Some(n) => {
-                let current =  Rc::try_unwrap(n).unwrap().into_inner();
+                let current = Rc::try_unwrap(n).unwrap().into_inner();
                 Self::helper(current.left, result);
                 result.push(current.val);
                 Self::helper(current.right, result);

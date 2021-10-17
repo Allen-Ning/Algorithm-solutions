@@ -9,6 +9,7 @@
 // mod solution112;
 // mod solution144;
 // mod solution257;
+mod solution283;
 // mod solution876;
 // mod solution1290;
 // mod solution1773;

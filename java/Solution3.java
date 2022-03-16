@@ -1,20 +1,19 @@
-import java.util.*;
-
 class Solution {
-    public int lengthOfLongestSubstring2(String s) {
-        int maxLength     = 0;
-        int repeatedIndex = 0;
-        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-        for (int startIndex = 0; startIndex < s.length(); startIndex++) {
-            char currentChar = s.charAt(startIndex);
-            if (map.containsKey(currentChar)) {
-                maxLength     = Math.max(maxLength, startIndex - repeatedIndex);
-                repeatedIndex = Math.max(map.get(currentChar) + 1, repeatedIndex);
-            }
-            map.put(currentChar, startIndex);
-        }
+    public int lengthOfLongestSubstring(String s) {
+        HashMap<Character, Integer> map = new HashMap();
+        int result = 0;
+        int j = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            Integer index = map.get(c);
 
-        maxLength = Math.max(maxLength,  s.length() - repeatedIndex);
-        return maxLength;
+            // trick -> this is to avoid corner cases to stop j to move left 
+            //          e.g. "abba"
+            if (index != null && j <= index + 1) j = index + 1;
+            map.put(c, i);
+
+            result = Math.max(result, i - j + 1);
+        }
+        return result;
     }
 }

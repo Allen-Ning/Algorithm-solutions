@@ -4,10 +4,6 @@ public class Solution202 {
 
   private HashSet<Integer> s = new HashSet<Integer>();
 
-  public static void main(String args) {
-
-  }
-
   public boolean isHappy(int n) {
     int result = 0;
 
@@ -29,4 +25,26 @@ public class Solution202 {
       }
     }
   }
+
+  // Best solution - FloydCycleDetection
+  public boolean isHappy2(int n) {
+       int slow = n;
+       int fast = n;
+       while (true) {
+           slow = next(slow);
+           fast = next(next(fast));
+           if (slow == fast) break;
+       }
+       return slow == 1;
+   }
+
+   private int next(int n) {
+       int result = 0;
+       while (n > 0) {
+           int value = n % 10;
+           result += value * value;
+           n /= 10;
+       }
+       return result;
+   }
 }

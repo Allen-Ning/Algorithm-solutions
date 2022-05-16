@@ -1,20 +1,26 @@
 class Solution {
-  public void sortColors(int[] nums) {
-    int i = 0, left = 0, right = nums.length - 1;
-    while(i =< right) {
-      if (nums[i] == 0) {
-        swop(nums, left++, i++);
-      } else if (nums[i] == 2) {
-        swop(nums, right--, i);
-      } else {
-        i++;
-      }
+    public void sortColors(int[] nums) {
+        int i = 0;
+        int j = nums.length - 1;
+        int t = 0;
+        int pivot = 1;
+        while (t <= j) {
+            if (nums[t] < pivot) {
+                swop(nums, t, i);
+                i++;
+                t++;
+            } else if (nums[t] > pivot) {
+                swop(nums, t, j);
+                j--;
+            } else {
+                t++;
+            }
+        }
     }
-  }
 
-  private void swop(int[] nums, int index, int index2) {
-    int temp = nums[index];
-    nums[index] = nums[index2];
-    nums[index2] = temp;
-  }
+    private void swop(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }

@@ -1,30 +1,18 @@
-import java.util.ArrayList;
-import java.util.List;
-
-class Solution22 {
-
-    private int total = 0;
-    private List<String> list = new ArrayList<>();
-
-    public static void main(String[] args) {
-        Solution22 s3 = new Solution22();
-        s3.generateParenthesis(3);
-    }
-
+class Solution {
     public List<String> generateParenthesis(int n) {
-        total = 2 * n;
-        add( "",0, 0);
-        return list;
+        List<String> results = new ArrayList();
+        helper(results, n, 0, 0, "");
+        return results;
     }
 
-    private void add(String str, int openBracket, int closeBracket) {
-        if (openBracket + closeBracket >= total) {
-            list.add(str);
+    private void helper(List<String> results, int n, int left, int right, String str) {
+        if (left < right || left > n || right > n) return;
+        if (left == n && right == n) {
+            results.add(str);
             return;
         }
 
-        if (openBracket < total / 2) { add(str + "(", openBracket + 1, closeBracket); }
-
-        if (closeBracket < openBracket) { add(str + ")", openBracket, closeBracket + 1); }
+        helper(results, n, left + 1, right, str + "(");
+        helper(results, n, left, right + 1, str + ")");       
     }
 }

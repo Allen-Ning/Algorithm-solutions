@@ -1,37 +1,37 @@
 class Solution {
-  public int[] searchRange(int[] nums, int target) {
-    if (nums.length == 0 ) return new int[] {-1, -1};
-    int first = findFirst(nums, target);
-    int last = findLast(nums, target);
-    return new int[] {first, last};
-  }
-
-  private int findFirst(int[] nums, int target) {
-    int low = 0;
-    int high = nums.length - 1;
-    while( low < high) {
-      int mid = low + (high - low) / 2;
-      if (nums[mid] < target) {
-        low = mid + 1;
-      } else {
-         high = mid;
-      }
+    public int[] searchRange(int[] nums, int target) {
+        int lower = bsLower(nums, target);
+        int upper = bsUpper(nums, target);
+        if (lower < 0 || lower >= nums.length || nums[lower] != target) lower = -1;
+        if (upper < 0 || upper >= nums.length || nums[upper] != target) upper = -1;
+        return new int[] { lower,  upper};
     }
-    return nums[low] == target ? low : -1;
-  }
 
-  private int findLast(int[] nums, int target) {
-    int low = 0;
-    int high = nums.length - 1;
-    while( low < high) {
-      int mid = low + (high - low) / 2 + 1;
-      if (nums[mid] > target) {
-        high = mid - 1;
-      } else {
-        low = mid;
-      }
+    private int bsLower(int[] nums, int target) {
+        int l = -1;
+        int h = nums.length;
+        while (l + 1 != h) {
+            int mid = l + (h - l) / 2;
+            if (nums[mid] < target) {
+                l = mid;
+            } else {
+                h = mid;
+            }
+        }
+        return h;
     }
-    return nums[low] == target ? low : -1;
-  }
 
+    private int bsUpper(int[] nums, int target) {
+        int l = -1;
+        int h = nums.length;
+        while (l + 1 != h) {
+            int mid = l + (h - l) / 2;
+            if (nums[mid] <= target) {
+                l = mid;
+            } else {
+                h = mid;
+            }
+        }
+        return l;
+    }
 }

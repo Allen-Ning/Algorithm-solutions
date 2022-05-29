@@ -1,42 +1,43 @@
 class Solution {
+    // trick -> 00 means next is dead and current is dead 
+    //          01 means next is dead and current is live
+    //          10 means next is live and current is dead
+    //          11 means next is live and current is live
     public void gameOfLife(int[][] board) {
-        if (board == null || board.length == 0 || board[0].length == 0) return;
-        
-        int row = board.length;
-        int column = board[0].length;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                int liveNeighbours = livesNeighbour(board, row, column, i, j);
-                boolean isLive = ((board[i][j] & 1) == 1);
-                if (isLive) {
-                    if (liveNeighbours == 2 || liveNeighbours == 3) {
-                        board[i][j] = 3;   
-                    }
-                } else {
-                    if (liveNeighbours == 3) {
-                        board[i][j] = 2;
-                    }
-                }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                change(board, i, j);
             }
         }
-        
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                board[i][j] = board[i][j] >> 1;
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                getStatus(board, i, j);
             }
         }
     }
-    
-    private int livesNeighbour(int[][] board, int row, int column, int i, int j) {  
-        int lives = 0;
-        for (int indexRow = Math.max(0, i - 1); indexRow <= Math.min(i + 1, row - 1); indexRow++) {
-            for (int indexCol = Math.max(0, j - 1); indexCol <= Math.min(j + 1, column - 1); indexCol++) {
-                if ((board[indexRow][indexCol] & 1) == 1) {
-                    lives += 1;
-                }
-            } 
+
+    private void change(int[][] board, int i, int j) {
+        int liveNeighbours = 0;
+
+        int[][] dirs = {{1, 1}, {-1, -1}, {1, -1}, {-1, 1}, {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (int[] dir : dirs) {
+            int x = dir[0] + i;
+            int y = dir[1] + j;
+            
+            if (x < 0 || x >= board.length || y < 0 || y >= board[0].length || (board[x][y] & 1) == 0) continue;
+            liveNeighbours++;
         }
-        if ((board[i][j] & 1) == 1) lives--;
-        return lives;
+
+        boolean isLive = (board[i][j] & 1) == 1;
+        if (isLive && (liveNeighbours == 2 || liveNeighbours == 3)) {
+            board[i][j] = board[i][j] | 2;
+        } else if (!isLive && liveNeighbours == 3) {
+            board[i][j] = board[i][j] | 2;
+        }
+    }
+
+    private void getStatus(int[][] board, int i, int j) {
+        board[i][j] = board[i][j] >> 1;
     }
 }

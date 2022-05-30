@@ -1,21 +1,23 @@
 class Solution {
-  public boolean searchMatrix(int[][] matrix, int target) {
-    if (matrix == null || matrix.length == 0) return false;
-    int rows = matrix.length;
-    int columns = matrix[0].length;
-    int left = 0;
-    int right = rows * columns;
-    while(left < right) {
-      int mid = left + (right - left) / 2;
-      int x = mid / columns;
-      int y = mid % columns;           
-      if (matrix[x][y] == target) return true;
-      if (matrix[x][y] > target) {
-        right = mid ;
-      } else {
-        left = mid + 1;
-      }
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int i = -1;
+        int j = matrix.length * matrix[0].length;
+        while (i + 1 != j) {
+            int mid = i + (j - i) / 2;
+
+            // trick -> map 1 dimension index to 2 dimensions indexes
+            int index = mid / matrix[0].length;
+            int subIndex = mid % matrix[0].length;
+
+            int value = matrix[index][subIndex];
+            if (value > target) {
+               j = mid;
+            } else if (value == target) {
+               return true;
+            } else {
+               i = mid;
+            }
+        }
+        return false;
     }
-    return false;
-  }
 }

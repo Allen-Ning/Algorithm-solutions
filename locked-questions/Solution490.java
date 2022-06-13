@@ -1,34 +1,41 @@
-public class Solution {
-    // please notice -> this is not AC and might need double check
+class Solution {
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        boolean[][] visited = new boolean[maze.length][maze[0].length];
-        return helper(maze, visited, start, destination, null);
-    }
+        Queue<int[]> queue = new LinkedList();
+        queue.offer(start);
+        int[][] dirs = new int[][] { {-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        boolean[][] isVisited = new boolean[maze.length][maze[0].length];
 
-    private boolean helper(int[][] maze, boolean[][] visited, int[] end, int[] current, int[] direction) {
-        if (current[0] < 0 || 
-            current[0] >= maze.length || 
-            current[1] < 0 ||
-            current[1] >= maze[0].length ||
-            maze[current[0]][current[1]] == 1 ||
-            visited[current[0]][current[1]]
-        ) return false;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
 
-        if (current[0] == end[0] && current[1] == end[1]) return true;
+            for (int i = 0; i < size; i++) {
+                int[] current = queue.poll();
 
-        visited[current[0]][current[1]] = true;
-        if (direction != null) {
-            int[] next = new int[] { current[0] + direction[0], current[1] + direction[1] };
-            if (helper(maze, visited, end, next, direction)) return true;
+                for (int[] dir : dirs) {
+                    int nextX = current[0] + dir[0];
+                    int nextY = current[1] + dir[1];
+
+                    // trick -> keep going if possible until the ball has to stop
+                    while (nextX >= 0 &&
+                           nextX < maze.length &&
+                           nextY >= 0 &&
+                           nextY < maze[0].length &&
+                           maze[nextX][nextY] != 1
+                          ) {
+                        nextX += dir[0];
+                        nextY += dir[1];
+                    }
+
+                    nextX -= dir[0];
+                    nextY -= dir[1];
+                    
+                    if (isVisited[nextX][nextY]) continue;
+                    isVisited[nextX][nextY] = true;
+                    if (nextX == destination[0] && nextY == destination[1]) return true;
+                    queue.offer(new int[] {nextX, nextY});
+                }    
+            }
         }
-
-        int[][] dirs = new int[][] { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
-        for (int[] dir : dirs) {
-            if (direction != null && dir[0] == direction[0] && dir[1] == direction[1]) continue;
-            int[] next = new int[] { current[0] + dir[0], current[1] + dir[1] };
-            if (helper(maze, visited, end, next, dir)) return true;
-        }
-        visited[current[0]][current[1]] = false;
         return false;
     }
 }

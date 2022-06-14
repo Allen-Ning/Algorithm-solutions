@@ -4,23 +4,28 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
-
-    private TreeNode pre = null;
     public void flatten(TreeNode root) {
-        helper(root);
+        helper(root, null);
     }
 
-    private void helper(TreeNode node) {
-        if (node == null) return;
+    private TreeNode helper(TreeNode node, TreeNode prev) {
+        if (node == null) return prev;
 
-        helper(node.right);
-        helper(node.left);
+        TreeNode right = helper(node.right, prev);
+        TreeNode left = helper(node.left, right);
+
         node.left = null;
-        node.right = pre;
-        pre = node;
+        node.right = left;
+        return node;
     }
 }

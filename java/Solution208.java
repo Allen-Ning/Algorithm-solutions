@@ -1,63 +1,63 @@
-class Node {
-    char value;
-    Node[] children = new Node[26];
-    boolean isWord = false;
-
-    public Node(char value) {
-        this.value = value;
-    }
-
-    public void addChild(Node node) {
-        int index = node.value - 'a';
-        children[index] = node;
-    }
-}
-
 class Trie {
 
     Node root;
-    /** Initialize your data structure here. */
+
     public Trie() {
-        root = new Node('@');
+        this.root = new Node(' ');
     }
 
-    /** Inserts a word into the trie. */
     public void insert(String word) {
-        Node node = root;
+        Node node = this.root;
+
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
             int index = c - 'a';
-            if (node.children[index] == null) {
-                Node newNode = new Node(c);
-                node.children[index] = newNode;
+            Node child = node.children[index];
+
+            if (child == null) {
+                child = new Node(c);
+                node.children[index] = child;
             }
-            node = node.children[index];
+            node = child;
         }
         node.isWord = true;
     }
 
-    /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        Node node = root;
+        Node node = this.root;
         for (int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            int index = c - 'a';
-            if (node.children[index] == null) return false;
-            node = node.children[index];
+            int index = word.charAt(i) - 'a';
+            Node child = node.children[index];
+
+            if (child == null) return false;
+            node = child;
         }
+
         return node.isWord;
     }
 
-    /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
-        Node node = root;
+        Node node = this.root;
         for (int i = 0; i < prefix.length(); i++) {
-            char c = prefix.charAt(i);
-            int index = c - 'a';
-            if (node.children[index] == null) return false;
-            node = node.children[index];
+            int index = prefix.charAt(i) - 'a';
+            Node child = node.children[index];
+
+            if (child == null) return false;
+            node = child;
         }
         return true;
+    }
+
+    class Node {
+        char c;
+        Node[] children;
+        boolean isWord;
+
+        public Node(char c) {
+            this.c = c;
+            children = new Node[26];
+            this.isWord = false;
+        }
     }
 }
 

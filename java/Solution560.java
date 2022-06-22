@@ -1,28 +1,23 @@
 class Solution {
     public int subarraySum(int[] nums, int k) {
-        // e.g1 
-        // [1, 1, 1]
-        // [1, 2, 3]
+        HashMap<Integer, Integer> map = new HashMap();
+        int preSum = 0;
+        int result = 0;
 
-        // e.g2
-        // [0, 1, 1, 1]
-        // [0, 1, 2, 3] 
-        // current sum - previous sum = k
-        // current sum - k = previous sum 
-        int counter = 0;
-        HashMap<Integer, Integer> preSumFrequency = new HashMap();
-        int currentSum = 0;
+        // trick -> this is to add 1 to result when preSum == k
+        map.put(0, 1);
         for (int num : nums) {
-            currentSum += num;
-            if (currentSum == k) counter++;
-            if (preSumFrequency.containsKey(currentSum - k)) counter += preSumFrequency.get(currentSum - k);
+            preSum += num;
 
-            if (preSumFrequency.containsKey(currentSum)) {
-                preSumFrequency.put(currentSum, preSumFrequency.get(currentSum) + 1);
-            } else {
-                preSumFrequency.put(currentSum, 1);
-            }
+            // trick -> this is to add 1 to result when preSum == k
+            //          this is alternative implementation for map.put(0, 1);
+
+            // if (preSum == k) result++;
+
+            result += map.getOrDefault(preSum - k, 0);
+            map.put(preSum, map.getOrDefault(preSum, 0) + 1);
         }
-        return counter;
+        return result;
     }
 }
+

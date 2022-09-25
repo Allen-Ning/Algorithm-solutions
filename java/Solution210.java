@@ -1,47 +1,59 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        if (numCourses == 0 || prerequisites == null || prerequisites.length == 0) {
-            int[] results = new int[numCourses];
-            for (int i = 0; i < numCourses; i++) results[i] = i;
-            return results;
-        }
+        // trick -> corner case1
+        // numCourses is zero -> return empty
+        if (numCourses == 0) return new int[0];
 
+        // preprocesing
+        HashMap<Integer, List<Integer>> courses = new HashMap();
         int[] indegrees = new int[numCourses];
-        boolean[] visited = new boolean[numCourses];
-        HashMap<Integer, List<Integer>> map = new HashMap();
 
         for (int[] prerequisite : prerequisites) {
-            indegrees[prerequisite[0]] += 1;
-            List<Integer> list = null;
-            if (map.containsKey(prerequisite[1])) {
-                list = map.get(prerequisite[1]);
-            } else {
-                list = new ArrayList();
-            }
-            list.add(prerequisite[0]);
-            map.put(prerequisite[1], list);
+            int first = prerequisite[1];
+            int second = prerequisite[0];
+            indegrees[second]++;
+
+            List<Integer> nextCourses = courses.getOrDefault(first, new ArrayList());
+            nextCourses.add(second);
+            courses.put(first, nextCourses);
         }
 
-        int[] results = new int[numCourses];
-        int counter = 0;
+        List<Integer> results = new ArrayList();
         Queue<Integer> queue = new LinkedList();
-        for (int i = 0; i < indegrees.length; i++) {
-            if (indegrees[i] == 0) queue.offer(i);
-        }
-        while (queue.size() > 0) {
-            int preCourse = queue.poll();
-            results[counter] = preCourse;
-            counter++;
+        boolean[] isVisited = new boolean[numCourses];
 
-            if (!map.containsKey(preCourse)) continue;
-            List<Integer> courses = map.get(preCourse);
-            for (int course : courses) {
-                indegrees[course] -= 1;
-                if (indegrees[course] == 0) {
-                    queue.add(course);
+        // trick -> add all course whose indegree is zero
+        for (int i = 0; i < indegrees.length; i++) {
+            if (indegrees[i] != 0) continue;
+            queue.offer(i);
+        }
+
+        while (queue.size() > 0) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                // trick -> syntax
+                Integer course = queue.poll();
+                results.add(course);
+                isVisited[course] = true;
+                List<Integer> nextCourses = courses.get(course);
+
+                if (nextCourses == null) continue;
+                for (int nextCourse : nextCourses) {
+                    if (isVisited[nextCourse]) continue;
+                    indegrees[nextCourse]--;
+
+                    if (indegrees[nextCourse] == 0) queue.offer(nextCourse);
                 }
             }
         }
-        return counter == numCourses ?  results : new int[0];
+
+        // trick -> corner case2
+        // impossible to finish all courses -> return empty
+        if (results.size() < numCourses) return new int[0];
+        int[] finalResults = new int[results.size()];
+        for (int i = 0; i < results.size(); i++) {
+            finalResults[i] = results.get(i);
+        }
+        return finalResults;
     }
 }

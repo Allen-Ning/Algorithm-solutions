@@ -1,28 +1,20 @@
 class Logger {
 
-    HashMap<String, Integer> map;
+    HashMap<String, Integer> limiter;
 
-    /** Initialize your data structure here. */
     public Logger() {
-        map = new HashMap();
+        this.limiter = new HashMap();
     }
 
-    /** Returns true if the message should be printed in the given timestamp, otherwise returns false.
-        If this method returns false, the message will not be printed.
-        The timestamp is in seconds granularity. */
     public boolean shouldPrintMessage(int timestamp, String message) {
-        if (!map.containsKey(message)) {
-            map.put(message, timestamp + 10);
-            return true;
-        }
+        if (timestamp < limiter.getOrDefault(message, -1))
+            return false;
 
-        Integer requiredTimestamp = map.get(message);
-        if (timestamp < requiredTimestamp) return false;
-
-        map.put(message, timestamp + 10);
+        limiter.put(message, timestamp + 10);
         return true;
     }
 }
+
 
 /**
  * Your Logger object will be instantiated and called as such:

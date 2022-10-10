@@ -1,63 +1,58 @@
 class Solution {
-  // trick -> quick select = binary search + two pointer
-  public int[][] kClosest(int[][] points, int K) {
-    random(points);
-    int l = 0;
-    int r = points.length - 1;
-    // trick -> it's like binary search, but we used index here to control move left or right
-    while (l < r) {
-        int index = partition(points, l, r);
-        if (index == K) break;
-        if (index < K) {
-            l = index + 1;
-        } else {
-            r = index - 1;
-        }
-    }
+  // quick selection template:
+  // https://www.jiuzhang.com/solution/kth-largest-element
+  public int[][] kClosest(int[][] points, int k) {
+    if (k >= points.length)
+      return points;
+    quickSelect(0, points.length - 1, points, k - 1);
 
-    int[][] results = new int[K][2];
-    for (int i = 0; i < K; i++) results[i] = points[i];
+    int[][] results = new int[k][2];
+    for (int i = 0; i < k; i++) {
+      results[i] = points[i];
+    }
     return results;
   }
 
-  private int partition(int[][] points, int start, int end) {
-    if (start == end) return start;
-    int p = end;
-    int l = start - 1;
-    int r = start;
+  private int[] quickSelect(int start, int end, int[][] points, int k) {
+    if (start >= end) {
+      return points[k];
+    }
 
-    while (l < p && r < p) {
-      // trick -> be careful about `equal` here
-      if (getDistance(points[r]) >= getDistance(points[p])) {
-        r++;
-      } else if (getDistance(points[r]) < getDistance(points[p])) {
-        swop(points, l + 1, r);
-        l++;
-        r++;
+    int left = start;
+    int right = end;
+    int pivot = left + (right - left) / 2;
+    int pivotValue = distance(points[pivot]);
+
+    while (left <= right) {
+      while (left <= right && distance(points[left]) < pivotValue) {
+        left++;
+      }
+
+      while (left <= right && distance(points[right]) > pivotValue) {
+        right--;
+      }
+
+      if (left <= right) {
+        int[] temp = points[left];
+        points[left] = points[right];
+        points[right] = temp;
+        left++;
+        right--;
       }
     }
-    swop(points, l + 1, p);
-    return l + 1;
-  }
 
-  private int getDistance(int[] point) {
-    // bug point -> point[0] * point[0] - point[1] * point[1];
-    return point[0] * point[0] + point[1] * point[1];
-  }
-
-  private void swop(int[][] points, int i, int j) {
-    int[] temp = points[i];
-    points[i] = points[j];
-    points[j] = temp;
-  }
-
-  private void random(int[][] points) {
-    Random r = new Random();
-    for (int i = 0; i < points.length; i++) {
-      int randomIndex = r.nextInt(points.length);
-      int[] temp = points[randomIndex];
-      points[randomIndex] = points[i];
-      points[i] = temp;
+    if (k <= right) {
+      return quickSelect(start, right, points, k);
     }
+
+    if (k >= left) {
+      return quickSelect(left, end, points, k);
+    }
+
+    return points[k];
+  }
+
+  private int distance(int[] point) {
+    return point[0] * point[0] + point[1] * point[1];
   }
 }

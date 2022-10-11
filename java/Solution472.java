@@ -1,34 +1,34 @@
 class Solution {
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
-        Set<String> set = new HashSet();
-        for (String word : words) set.add(word);
+        // trick -> sort first from shortest word to longest word
+        Arrays.sort(words, (n1, n2) -> n1.length() - n2.length());
+
         List<String> results = new ArrayList();
-        for (String word : words) {
-            set.remove(word);
-            if(canBreak(set, word)) results.add(word);
-            set.add(word);
+        Set<String> set = new HashSet();
+
+        for (int i = 0; i < words.length; i++) {
+            if (canForm(words[i], set))
+                results.add(words[i]);
+            // trick -> only add word to set after checking to avoid
+            // words[i] check against it itself in dp:
+            // dp[s.length()] && set.contains(str.substring(0, s.length())
+            set.add(words[i]);
         }
         return results;
     }
 
-    private boolean canBreak(Set<String> set, String word) {
-        if (set.size() == 0 || word.length() == 0) return false;
-
-        int size = word.length() + 1;
-        // trick -> dp indicates word length from length 0 to word.length()
-        boolean[] dp = new boolean[size];
+    private boolean canForm(String str, Set<String> set) {
+        boolean[] dp = new boolean[str.length() + 1];
         // trick -> be careful about the dp[0] = true
         dp[0] = true;
-        // trick -> be careful about the j starting from 0 ending before i
-        for (int i = 1; i <= word.length(); i++) {
-            for (int j = 0; j < i; j++) {
-                if (!dp[j]) continue;
-                if (set.contains(word.substring(j, i))) {
-                    dp[i] = true;
+
+        for (int i = 1; i <= str.length(); i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                dp[i] = dp[j] && set.contains(str.substring(j, i));
+                if (dp[i])
                     break;
-                }
             }
         }
-        return dp[word.length()];
+        return dp[str.length()];
     }
 }

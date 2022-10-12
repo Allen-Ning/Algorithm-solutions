@@ -1,43 +1,41 @@
 class Solution {
     public int smallestDistancePair(int[] nums, int k) {
         Arrays.sort(nums);
-        int min = Integer.MAX_VALUE;
-        int max = nums[nums.length - 1] - nums[0];
-        for (int i = 1; i < nums.length; i++) min = Math.min(min, nums[i] - nums[i - 1]);
-        // trick -> low bound
-        while (min < max) {
-            int mid = min + (max - min) / 2;
-            int counter = getCounter(nums, mid);
-            if (counter >= k) {
-                max = mid;
+
+        int left = -1;
+        int right = nums[nums.length - 1] - nums[0] + 1;
+        while (left + 1 != right) {
+            int mid = left + (right - left) / 2;
+            int counter = 0;
+
+            for (int i = 0; i < nums.length; i++) {
+                int pos = bs(nums, nums[i] + mid);
+                // trick -> be careful to caculate the counter
+                counter += pos - i;
+            }
+
+            if (counter < k) {
+                left = mid;
             } else {
-                min = mid + 1;
+                right = mid;
             }
         }
-        return min;
+        return right;
     }
 
-    private int getCounter(int[] nums, int gap) {
-        int counter = 0;
-        for (int i = 0; i < nums.length; i++) {
-            int index = findIndex(nums, i, nums[i] + gap);
-            counter += index - i;
-        }
-        return counter;
-    }
+    private int bs(int[] nums, int value) {
+        int left = -1;
+        int right = nums.length;
 
-    private int findIndex(int[] nums, int start, int value) {
-        int l = start;
-        int r = nums.length;
-        // trick -> upper bound
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-            if (nums[mid] > value) {
-                r = mid;
+        while (left + 1 != right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] <= value) {
+                left = mid;
             } else {
-                l = mid + 1;
+                right = mid;
             }
         }
-        return (l >= nums.length || nums[l] > value) ? l - 1 : l;
+        return left;
     }
 }

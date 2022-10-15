@@ -1,58 +1,73 @@
 class Solution {
-  public int largestIsland(int[][] grid) {
-    if (grid == null || grid.length == 0) return 0;
-    HashMap<Integer, Integer> map = new HashMap();
-
-    int value = 2;
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[0].length; j++) {
-        if (grid[i][j] == 1) {
-          helper(grid, map, value, i, j);
-          value++;
+    public int largestIsland(int[][] grid) {
+        int counter = 2;
+        Map<Integer, Integer> map = new HashMap();
+        int max = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] != 1) continue;
+        
+                int size = bfs(grid, i, j, counter);
+                map.put(counter, size);
+                max = Math.max(max, size);
+                counter++;
+            }
         }
-      }
+
+        int[][] dirs = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] != 0) continue;
+
+                int total = 1;
+                boolean[] isVisited = new boolean[counter];
+                for (int[] dir : dirs) {
+                    int x = i + dir[0];
+                    int y = j + dir[1];
+    
+                    if (x < 0 || 
+                        x >= grid.length || 
+                        y < 0 || 
+                        y >= grid[0].length ||
+                        isVisited[grid[x][y]] || 
+                        grid[x][y] < 2
+                     ) continue;
+
+                    total += map.getOrDefault(grid[x][y], 0);
+                    isVisited[grid[x][y]] = true;
+                }
+                max = Math.max(max, total);
+            }
+        }
+        return max;
     }
 
-    int result = 0;
-    // trick -> this is for checking the case 3
-    // [[1, 1], [1, 1]]
-    boolean hasZero = false;
-    int[][] dirs = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[0].length; j++) {
-        if (grid[i][j] == 0) {
-          hasZero = true;
-          HashSet<Integer> set = new HashSet();
-          int temp = 1;
-          for (int[] dir : dirs) {
-            int newX = i + dir[0];
-            int newY = j +  dir[1];
+    private int bfs(int[][] grid, int i, int j, int counter) {
+        Queue<int[]> queue = new LinkedList();
+        queue.offer(new int[] {i, j});
+        grid[i][j] = counter;
 
-            if (newX >= 0 &&
-                newX < grid.length &&
-                newY >= 0 &&
-                newY < grid[0].length &&
-                grid[newX][newY] >= 2 &&
-                set.add(grid[newX][newY])
-               ) {
-              temp += map.get(grid[newX][newY]);
-               }
-          }
-          result = Math.max(result, temp);
+        int result = 0;
+        int[][] dirs = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        while (queue.size() > 0) {
+            int[] point = queue.poll();
+            result++;
+
+            for (int[] dir : dirs) {
+                int x = point[0] + dir[0];
+                int y = point[1] + dir[1];
+
+                if (x < 0 || 
+                    x >= grid.length ||
+                    y < 0 || 
+                    y >= grid[0].length ||
+                    grid[x][y] != 1) continue;
+
+                    queue.offer(new int[] {x, y});
+                    // trick -> this will prevent lots of duplicated grid[x][y] to be added in 
+                    grid[x][y] = counter;
+                }
         }
-      }
+        return result;
     }
-    return hasZero ? result : grid.length * grid[0].length;
-  }
-
-  private void helper(int[][] grid, HashMap<Integer, Integer> map, int value, int x, int y) {
-    if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length) return;
-    if (grid[x][y] != 1) return;
-
-    int[][] dirs = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    grid[x][y] = value;
-    map.put(value, map.getOrDefault(value, 0) + 1);
-
-    for (int[] dir : dirs) helper(grid, map, value, x + dir[0], y + dir[1]);
-  }
 }

@@ -1,36 +1,36 @@
 class Solution {
-  public int singleNonDuplicate(int[] nums) {
-    int l = 0;
-    int r = nums.length;
-    while (l < r) {
-      int mid = l + (r - l) / 2;
-      int midPair = -1;
-      if (mid % 2 == 0) {
-        midPair = mid + 1;
-      } else {
-        midPair = mid - 1;
-      }
-
-      // this is for handling special case, [1] or [1, 1, 2]
-      // // 0 1 2
-      // 1 1 2
-
-      // l = 0
-      // r = 3
-      // m = 1
-
-      // l = 2
-      // r = 3
-      // m = 2 + (3 - 2)/2  = 2
-      // m + 1 = 3 which is out of bound
-      if (midPair > nums.length - 1) return nums[mid];
-
-      if (nums[mid] != nums[midPair]) {
-        r = mid;
-      } else {
-        l = mid + 1;
-      }
+    public int singleNonDuplicate(int[] nums) {
+        int start = -1;
+        int end = nums.length;
+        while (start + 1 != end) {
+            int mid = start + (end - start) / 2;
+            // trick -> e.g. mid = odd 
+            //
+            //                            0  1  2
+            //                           [1, 1, 2]
+            //
+            //               mid = even
+            //                           0  1  2  3  4
+            //                          [1, 1, 2, 2, 3]
+            //
+            // trick -> mid < nums.length - 1
+            //                     e.g.              
+            //                             0
+            //                            [1]
+            //
+            //                           0  1  2
+            //                          [1, 1, 2]
+            // 
+            // trcik -> no need to check mid > 0 && mid % 2 == 1 && nums[mid] == nums[mid - 1]
+            //          cos there is alway nums[mid - 1] existing
+            if ((mid < nums.length - 1 && mid % 2 == 0 && nums[mid] == nums[mid + 1]) ||
+                (mid % 2 == 1 && nums[mid] == nums[mid - 1]) 
+               )
+                start = mid;
+            else {
+                end = mid;
+            }
+        }
+        return nums[end];
     }
-    return nums[l];
-  }
 }

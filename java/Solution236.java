@@ -13,14 +13,18 @@ class Solution {
     }
 
     private TreeNode helper(TreeNode node, TreeNode p, TreeNode q) {
-        if (node == p || node == q || node == null) return node;
+        if (node == null || node == p || node == q) return node;
 
-        TreeNode node1 = helper(node.left, p, q);
-        TreeNode node2 = helper(node.right, p, q);
+        TreeNode left = helper(node.left, p, q);
+        TreeNode right = helper(node.right, p, q);
 
-        if (node1 != null && node2 != null) {
+        if (left != null && right != null) {
             return node;
         }
-        return node1 == null ? node2 : node1;
+
+        if (left != null) return left;
+        if (right != null) return right;
+
+        return null;
     }
 }

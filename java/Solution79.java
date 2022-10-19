@@ -1,34 +1,32 @@
 class Solution {
-  private String word;
-  private char[][] board;
-
   public boolean exist(char[][] board, String word) {
-    int rows = board.length;
-    int columns = board[0].length;
-    
-    this.board = board;
-    this.word = word;
-
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
-        boolean[][] visited = new boolean[rows][columns];
-        if (search(0, i, j, visited)) return true;
+      for (int i = 0; i < board.length; i++) {
+          for (int j = 0; j < board[0].length; j++) {
+               if (helper(board, word, i, j, 0)) {
+                   return true;
+               }
+          }
       }
-    }
-    return false;
+      return false;
   }
 
-  private boolean search(int index, int i, int j, boolean[][] visited) {
-    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;
-    if (visited[i][j]) return false;
-    if (!(this.board[i][j] == this.word.charAt(index))) return false;
-    if (index == this.word.length() - 1) return true;
-    visited[i][j] = true;
-    boolean result = search(index + 1, i, j - 1, visited) || 
-           search(index + 1, i, j + 1, visited) || 
-           search(index + 1, i + 1, j, visited) || 
-           search(index + 1, i - 1, j, visited);
-    if(!result) visited[i][j] = false;
-    return result;
+  private boolean helper(char[][] board, String word, int x, int y, int index) {
+      if (x < 0 || x >= board.length || y < 0 || y >= board[0].length) return false;
+      if (index >= word.length()) return false;
+      if (board[x][y] != word.charAt(index)) return false;
+      if (index == word.length() - 1 && board[x][y] == word.charAt(index)) return true;
+
+      board[x][y] = '*';
+      int[][] dirs = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+      for (int[] dir : dirs) {
+          int nextX = dir[0] + x;
+          int nextY = dir[1] + y;
+
+          if (helper(board, word, nextX, nextY, index + 1)) return true;
+      }
+
+      // trick -> easy to forget reset the value
+      board[x][y] = word.charAt(index);
+      return false;
   }
 }

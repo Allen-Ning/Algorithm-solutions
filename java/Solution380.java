@@ -16,12 +16,14 @@ class RandomizedSet {
         map.put(val, list.size() - 1);
         return true;
     }
-    
+
     public boolean remove(int val) {
         if (!map.containsKey(val)) return false;
 
         Integer index = map.get(val);
         int last = list.get(list.size() - 1);
+
+        // trick -> don't forget to update both list and map for val and last
         list.set(index, last);
         // trick -> we need to update the last element index
         map.put(last, index);

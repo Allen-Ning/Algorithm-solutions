@@ -11,30 +11,35 @@
 
 
 class Solution {
-  public void nextPermutation(int[] nums) {
-    if (nums.length == 0 || nums.length == 1) return;
-    int i = nums.length - 2;
-    while(i >= 0 && nums[i] >= nums[i + 1]) i -= 1;
+    public void nextPermutation(int[] nums) {
+        if (nums.length <= 1) return;
 
-    if (i > 0) {
-      int j = nums.length - 1;
-      while ( nums[j] <= nums[i]) {
-        j -= 1;
-      }
-      swop(nums, i, j);
+        for (int i = nums.length - 1; i > 0; i--) {
+            if (nums[i - 1] >= nums[i]) continue;
+
+            int j = -1;
+            for (j = nums.length - 1; j >= 0; j--) {
+                if (nums[j] > nums[i - 1]) break;
+            }
+            swop(nums, i - 1, j);
+            reverse(nums, i, nums.length - 1);
+            return;
+        }
+
+        reverse(nums, 0, nums.length - 1);
     }
-    reverse(nums, i+1 , nums.length - 1);
-  }
 
-  private void swop(int[] nums, int i, int j) {
-    int temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
-  }
-
-  private void reverse(int[] nums, int i, int j) {
-    while (i < j) {
-      swop(nums, i++, j--);
+    private void reverse(int[] nums, int i, int j) {
+        while (i < j) {
+            swop(nums, i, j);
+            i++;
+            j--;
+        }
     }
-  }
+
+    private void swop(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }

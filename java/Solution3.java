@@ -9,7 +9,7 @@ class Solution {
 
             // trick -> this is to avoid corner cases to stop j to move left 
             //          e.g. "abba"
-            if (index != null && j <= index + 1) j = index + 1;
+            if (index != null && j <= index) j = index + 1;
             map.put(c, i);
 
             result = Math.max(result, i - j + 1);

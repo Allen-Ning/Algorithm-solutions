@@ -1,49 +1,25 @@
-class Solution {
-    // no implementation trick
-    // we need to better use the condition -> two sorted array to reduce time complexity
-    // trick -> we cannot simpliy use greedy way like k-way-merge or only 4 pointers in o(n) due to the example below
-    //          [-10,-4,0,0,6]
-    //          [3,5,6,7,8,100]
-    //          10
-    //          Output:
-    //          [[-10,3],[-10,5],[-10,6],[-10,7],[-10,8],[-4,3],[0,3],[0,3],[6,3],[-4,5]]
-    //          Expected:
-    //          [[-10,3],[-10,5],[-10,6],[-10,7],[-10,8],[-4,3],[-4,5],[-4,6],[0,3],[0,3]]
-    //          bascially (-10, 100) is the blocker, it will blick (-4, x) to be picked
-    //
-    //          in general
-    //          [a, b, c]
-    //          [d, e, f]
-    //          a + f might not be smaller than b + e or c + e
-    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         List<List<Integer>> results = new ArrayList();
-        if (nums1 == null || nums1.length == 0 || nums2 == null || nums2.length == 0 || k == 0) return results;
-        PriorityQueue<Pair> minHeap = new PriorityQueue<>((a,b) -> (a.total - b.total));
-        for (int i = 0; i < nums1.length && i <= k; i++) minHeap.offer(new Pair(i, 0, nums1[i] + nums2[0]));
+        if (nums1.length == 0 || nums2.length == 0) return results;
 
-        while (!minHeap.isEmpty() && results.size() < k) {
-            Pair p = minHeap.poll();
-            int nextIndex2 = p.index2 + 1;
+        PriorityQueue<int[]> queue = new PriorityQueue<>((e1, e2) -> nums1[e1[0]] + nums2[e1[1]] - nums1[e2[0]] - nums2[e2[1]]);
+        for (int i = 0; i < nums1.length; i++) queue.offer(new int[] {i, 0});
+        int counter = 0;
 
+        while (queue.size() > 0) {
+            int[] current = queue.poll();
             List<Integer> result = new ArrayList();
-            result.add(nums1[p.index1]);
-            result.add(nums2[p.index2]);
-            results.add(result);
-            
-            if (nextIndex2 < nums2.length) minHeap.offer(new Pair(p.index1, nextIndex2, nums1[p.index1] + nums2[nextIndex2]));   
-        }
-        return results;
-    }
-}
 
-class Pair {
-    int index1;
-    int index2;
-    int total;
-    
-    public Pair(int index1, int index2, int total) {
-        this.index1 = index1;
-        this.index2 = index2;
-        this.total = total;
+            result.add(nums1[current[0]]);
+            result.add(nums2[current[1]]);
+            results.add(result);
+
+            counter++;
+
+            if (counter == k) return results;
+            if (current[1] + 1 < nums2.length) queue.offer(new int[] {current[0], current[1] + 1});
+        }
+        
+        return results;
     }
 }

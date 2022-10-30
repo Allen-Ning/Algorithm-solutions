@@ -1,26 +1,27 @@
 class Solution {
-  public int candy(int[] ratings) {
-    int[] values = new int[ratings.length];
-    Arrays.fill(values, 1);
-    
-    // check left point of current point
-    for (int i = 1; i < values.length; i++) {
-      if (ratings[i] > ratings[i - 1]) {
-        values[i] = values[i - 1] + 1;
-      }
-    }
+    public int candy(int[] ratings) {
+        int[] candy = new int[ratings.length];
+        Arrays.fill(candy, 1);
 
-    // check right point of current point
-    for (int i = values.length - 2; i >= 0; i--) {
-      if (ratings[i] > ratings[i + 1]) {
-        values[i] = Math.max(values[i], values[i + 1] + 1);
-      }
+        // left -> right
+        for (int i = 0; i < ratings.length - 1; i++) {
+            if (ratings[i] >= ratings[i + 1]) continue;
+
+            candy[i + 1] = Math.max(candy[i + 1], candy[i] + 1);
+        }
+
+        // right -> left
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] <= ratings[i + 1]) continue;
+            
+            candy[i] = Math.max(candy[i], candy[i + 1] + 1);
+        }
+
+        int result = 0;
+        for (int i = 0; i < candy.length; i++) {
+            result += candy[i];
+        }
+
+        return result;
     }
-    
-    int total = 0;
-    for (int value : values) {
-      total +=  value;
-    }
-    return total;
-  }
 }

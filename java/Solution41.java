@@ -5,25 +5,28 @@ class Solution {
     // [-1, 1,  3,  4]
     // [1,  -1, 3,  4]
     public int firstMissingPositive(int[] nums) {
-        if (nums == null || nums.length == 0) return 1;
+        // trick -> sort value by index - one by one util it cannot find
         for (int i = 0; i < nums.length; i++) {
-            while (nums[i] > 0 && nums[i] - 1 < nums.length && nums[nums[i] - 1] != nums[i]) {
-                swop(nums, nums[i] - 1, i);
+            int num = nums[i];
+            while (num - 1 >= 0 &&
+                   num - 1 < nums.length &&
+                   nums[num - 1] != num) {
+                swop(nums, num - 1, i);
+                num = nums[i];
             }
         }
 
+        int result = 1;
         for (int i = 0; i < nums.length; i++) {
-            System.out.println(nums[i]);
-            if (nums[i] != i + 1) {
-                return i + 1;
-            }
+            if (result != nums[i]) return result;
+            result++;
         }
-        return nums.length + 1;
+        return result;
     }
 
     private void swop(int[] nums, int i, int j) {
         int temp = nums[i];
-        nums[i]  = nums[j];
-        nums[j]  = temp;
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }

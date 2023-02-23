@@ -1,39 +1,20 @@
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Collections;
-
-// binary search - https://www.geeksforgeeks.org/collections-binarysearch-java-examples/
 class Solution {
     public boolean isSubsequence(String s, String t) {
-        HashMap<Character, ArrayList<Integer>> map = new HashMap<>();
-        for (int index = 0; index < t.length(); index++) {
-            char letter = t.charAt(index);
-            ArrayList<Integer> list = map.get(letter);
-            if (list == null) {
-              list = new ArrayList<>();
-              list.add(index);
-              map.put(letter, list);
-            } else {
-              list.add(index);
+        int index1 = 0;
+        int index2 = 0;
+
+        while (index1 < s.length() && index2 < t.length()) {
+            char c1 = s.charAt(index1);
+            char c2 = t.charAt(index2);
+
+            if (c1 == c2) {
+                index1++;
+                index2++;
+                continue;
             }
+            index2++;
         }
 
-        ArrayList<Integer> list;
-        int minIndex = Integer.MIN_VALUE;
-        for (int index = 0; index < s.length(); index++) {
-          list = map.get(s.charAt(index));
-          if (list == null) return false;
-          int result = Collections.binarySearch(list, minIndex);
-          if (result < 0) result = -result - 1;
-
-          // array [0, 1, 2, 3, 4, 5]
-          // search 8
-          // return -6 -1 = -7
-          // check if -(-7) -1  === 6 (array size)
-          // if so, eleement not exsit return false
-          if (result == list.size()) return false;
-          minIndex  = list.get(result) + 1;
-        }
-        return true;
+        return index1 >= s.length();
     }
 }

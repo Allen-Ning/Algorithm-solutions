@@ -1,5 +1,6 @@
 class Solution {
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        // trick -> here is to attach with existing nodes if one of t1 or t2 node is missing
         if (t1 == null) return t2;
         if (t2 == null) return t1;
 

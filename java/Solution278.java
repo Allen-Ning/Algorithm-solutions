@@ -15,6 +15,6 @@ public class Solution extends VersionControl {
                 start = mid;
             }
         }
-        return end == (long) n + 1 ? -1 : (int) end;
+        return (int) end;
     }
 }

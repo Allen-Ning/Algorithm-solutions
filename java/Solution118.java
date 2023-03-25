@@ -1,21 +1,17 @@
 class Solution {
     public List<List<Integer>> generate(int numRows) {
         List<List<Integer>> results = new ArrayList();
-        List<Integer> prevResult = new ArrayList();
-        prevResult.add(1);
-        results.add(prevResult);
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> result = new ArrayList();
+            for (int j = 0; j < i + 1; j++) {
+                if (j == 0 || j == i) {
+                    result.add(1);
+                    continue;
+                }
 
-        int row = 2;
-        while (row <= numRows) {
-            List<Integer> currentResult = new ArrayList();
-            currentResult.add(prevResult.get(0));
-            for (int i = 1; i < row - 1; i++) {
-                currentResult.add(prevResult.get(i - 1) + prevResult.get(i));
+                result.add(results.get(i - 1).get(j - 1) + results.get(i - 1).get(j));
             }
-            currentResult.add(prevResult.get(prevResult.size() - 1));
-            results.add(currentResult);
-            prevResult = currentResult;
-            row++;
+            results.add(result);
         }
         return results;
     }

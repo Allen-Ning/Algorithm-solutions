@@ -1,16 +1,14 @@
 class Solution {
-    public int characterReplacement(String s, int k) {
-        int[] count = new int[256];
-        int maxCount = 0, start = 0, maxLength = 0;
-        for (int end = 0; end < s.length(); end++) {
-            char c = s.charAt(end);
-            maxCount = Math.max(maxCount, ++count[c]);
-            while (end - start - maxCount + 1 > k) {
-                maxCount = Math.max(maxCount, --count[s.charAt(start)]);
-                start++;
-            }
-            maxLength = Math.max(maxLength, end - start + 1);
+    public boolean isAnagram(String s, String t) {
+        int[] letters = new int[26];
+
+        for(int i = 0; i < s.length(); i++) letters[s.charAt(i) - 'a'] += 1;
+        for(int i = 0; i < t.length(); i++) letters[t.charAt(i) - 'a'] -= 1;
+
+        for (int i = 0; i < letters.length; i++) {
+            if (letters[i] != 0) return false;
         }
-        return maxLength;
+
+        return true;
     }
 }

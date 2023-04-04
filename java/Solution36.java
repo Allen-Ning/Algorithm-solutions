@@ -1,21 +1,25 @@
 class Solution {
-  public boolean isValidSudoku(char[][] board) {
-    if (board == null) return false;
+    public boolean isValidSudoku(char[][] board) {
+        boolean[][] rows = new boolean[9][9];
+        boolean[][] cols = new boolean[9][9];
+        boolean[][] grids = new boolean[9][9]; 
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == '.') continue;
 
-    for (int i = 0; i < board.length; i++) {
-      HashSet<Character> rows = new HashSet();
-      HashSet<Character> columns = new HashSet();
-      HashSet<Character> cube = new HashSet();
+                // trick -> easy to calcute wrong
+                int gridIndex = (i / 3) * 3 + j / 3;
+                int valueIndex = board[i][j] - '1';
+                
+                if (rows[i][valueIndex]) return false;
+                if (cols[j][valueIndex]) return false;
+                if (grids[gridIndex][valueIndex]) return false;
 
-      for (int j = 0 ; j < board[0].length; j++) {
-        if (board[i][j] != '.' && !rows.add(board[i][j])) return false;
-        if (board[j][i] != '.' && !columns.add(board[j][i])) return false;
-
-        int cubeX = (i / 3) * 3 + j / 3;
-        int cubeY = (i % 3) * 3 + j % 3;
-        if (board[cubeX][cubeY] != '.' && !cube.add(board[cubeX][cubeY])) return false;
-      }
+                rows[i][valueIndex] = true;
+                cols[j][valueIndex] = true;
+                grids[gridIndex][valueIndex] = true;
+            }
+        }
+        return true;
     }
-    return true;
-  }
 }

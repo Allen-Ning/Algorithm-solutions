@@ -1,22 +1,16 @@
 class Solution {
     public void moveZeroes(int[] nums) {
-        // slow left not including slow
-        int slow = 0;
-        // fast searching area
-        int fast = 0;
-        while (fast < nums.length) {
-            if (nums[fast] == 0) {
-                fast++;
-                continue;
-            };
-            nums[slow] = nums[fast];
-            slow++;
-            fast++;
+        // left -> non-zero not including the current index
+        // right -> scan area
+        int left = 0;
+        int right = 0;
+        for (;right < nums.length; right++) {
+            int num = nums[right];
+            if (num == 0) continue;
+
+            nums[left++] = num;
         }
 
-        while (slow < nums.length) {
-            nums[slow] = 0;
-            slow++;
-        }
+        while (left < nums.length) nums[left++] = 0;
     }
 }

@@ -13,23 +13,17 @@ class Solution {
     public int climbStairs2(int n) {
         if (n <= 2) return n;
 
-        //  0  1  2  3  4  5  6
-        // [1, 1, 0, 0, 0, 0, 0]
-        //
-        // f(2) = f(2- 2) + f (2 - 1) = 2
-        // f(3) = f(3 - 2) + f(3 - 1) = f(1) + f(2) = 1 + 2 = 3
         int step1 = 1;
         int step2 = 2;
-
         int step = -1;
-        int i = 3;
-        while (i <= n) {
+        int count = 2;
+
+        while (count < n) {
             step = step1 + step2;
             step1 = step2;
             step2 = step;
-            i++;
+            count++;
         }
         return step;
     }
-
 }

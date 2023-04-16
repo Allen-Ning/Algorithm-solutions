@@ -13,8 +13,6 @@ class Solution {
     }
 
     private void reverse(int nums[], int start, int end) {
-        int l = start;
-        int h = end;
         while (start < end) {
             int temp = nums[start];
             nums[start] = nums[end];

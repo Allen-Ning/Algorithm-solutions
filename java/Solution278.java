@@ -3,6 +3,7 @@
 
 public class Solution extends VersionControl {
     public int firstBadVersion(int n) {
+        // trick -> n could be Integer.MAX_VALUE,which could introduce overflow
         long start = 0;
         long end = (long) n + 1;
 

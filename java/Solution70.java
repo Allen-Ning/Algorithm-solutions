@@ -13,17 +13,17 @@ class Solution {
     public int climbStairs2(int n) {
         if (n <= 2) return n;
 
+        int result = -1;
+        int current = 3;
         int step1 = 1;
         int step2 = 2;
-        int step = -1;
-        int count = 2;
-
-        while (count < n) {
-            step = step1 + step2;
+        while (current <= n) {
+            result = step2 + step1;
             step1 = step2;
-            step2 = step;
-            count++;
+            step2 = result;
+
+            current++;
         }
-        return step;
+        return result;
     }
 }

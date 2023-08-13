@@ -1,39 +1,46 @@
 class Solution {
-    public boolean backspaceCompare(String S, String T) {
-        if (S == null || T == null) return false; 
-        int p1 = S.length() - 1;
-        int p2 = T.length() - 1;
-        while (p1 >= 0 || p2 >= 0) {
-            int step = 0;
-            // trick -> implementation is very trick
-            while (p1 >= 0 && (S.charAt(p1) == '#' || step > 0)) {
-                if (S.charAt(p1) == '#') {
-                    step++;
-                } else {
-                    step--;
-                }
-                p1--;
-            }
-            char c1 = (p1 < 0) ? ' ' : S.charAt(p1);   
+    public boolean backspaceCompare(String s, String t) {
+        if (s == null && t == null) return true;
+        if (s == null || t == null) return false;
 
-            step = 0;
-            while (p2 >= 0 && (T.charAt(p2) == '#' || step > 0)) {
-                if (T.charAt(p2) == '#') {
-                    step++;
-                } else {
-                    step--;
-                }
-                p2--;
-            }
-            char c2 = (p2 < 0) ? ' ' : T.charAt(p2);
-           
-            if (c1 != c2) return false;
+        int p1 = s.length() - 1;
+        int p2 = t.length() - 1;
 
+        while (p1 >= 0 && p2 >= 0) {
+            p1 = next(s, p1);
+            p2 = next(t, p2);
+            if (p1 < 0 && p2 < 0) return true;
+            if (p1 < 0 || p2 < 0) break;
+
+            if (s.charAt(p1) != t.charAt(p2)) return false;
             p1--;
             p2--;
         }
-        if  (p1 > 0 || p2 > 0) return false;
+
+        // trick -> deal with corner case
+        //          e.g ["nzp#o#g", "b#nzp#o#g"]
+        if (p1 >= 0) p1 = next(s, p1);
+        if (p2 >= 0) p2 = next(t, p2);
+
+        if (p1 >= 0 || p2 >= 0) return false;
         return true;
     }
-    
+
+    private int next(String str, int index) {
+        int counter = 0;
+        for (int i = index; i >=0; i--) {
+            char c = str.charAt(i);
+            if (c == '#') {
+                counter++;
+                continue;
+            }
+
+            if (counter > 0) {
+                counter--;
+                continue;
+            }
+            return i;
+        }
+        return -1;
+    }
 }

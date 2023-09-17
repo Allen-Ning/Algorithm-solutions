@@ -1,21 +1,25 @@
 class Solution {
-    public int[] sortedSquares(int[] A) {
-        if (A == null || A.length == 0) return new int[0];
+    public int[] sortedSquares(int[] nums) {
+        // trick -> fill the reuslt from the biggest number to the smallest number
+        int left = 0;
+        int right = nums.length - 1;
 
-        int[] result = new int[A.length];
-        int low  = 0;
-        int high = A.length - 1;
-        int index = A.length - 1;
-        while (low <= high) {
-            if (Math.abs(A[low]) < Math.abs(A[high])) {
-                result[index] = Math.abs(A[high]) * Math.abs(A[high]);
-                high--;
+        int[] results = new int[nums.length];
+        int index = results.length - 1;
+
+        while (left <= right) {
+            int value = nums[left] * nums[left];
+            int value2 = nums[right] * nums[right];
+
+            if (value > value2) {
+                results[index--] = value;
+                left++;
             } else {
-                result[index] = Math.abs(A[low]) * Math.abs(A[low]);
-                low++;
+                results[index--] = value2;
+                right--;
             }
-            index--;
         }
-        return result;
+
+        return results;
     }
 }

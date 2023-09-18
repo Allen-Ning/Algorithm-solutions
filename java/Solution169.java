@@ -1,17 +1,16 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        // trick -> avoid to use hashmap
-        int target = -1;
-        int counter = 0;
-        for (int i = 0; i < nums.length; i++) {
+        int target = nums[0];
+        int result = 1;
+
+        for (int i = 1; i < nums.length; i++) {
             int num = nums[i];
-            if (counter == 0) {
-                target = nums[i];
-                counter = 1;
-            } else if (num != target) {
-                counter--;
+            if (result == 0) target = num;
+
+            if (target == num) {
+                result++;
             } else {
-                counter++;
+                result--;
             }
         }
         return target;

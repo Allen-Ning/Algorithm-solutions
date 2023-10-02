@@ -12,14 +12,19 @@ class Solution {
     public ListNode middleNode(ListNode head) {
         // slow and fast
 
-        // 1 -> 2 -> 3 -> 4 -> 5 -> null
-        //           s  
-        //                     f
+        /**
+            f         f         f
+            s    s    s
+            1 -> 2 -> 3 -> 4 -> 5
 
-        // 1 -> 2 -> 3 -> 4 -> 5 - > 6 -> null
-        //                s  
-        //                                 f
+            f         f         f          f
+            s    s    s    s
+            1 -> 2 -> 3 -> 4 -> 5 -> 6 -> null
 
+            f          f
+            s    s
+            1 -> 2 -> null
+        */
         ListNode slow = head;
         ListNode fast = head;
 

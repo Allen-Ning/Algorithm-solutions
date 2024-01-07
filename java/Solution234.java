@@ -3,19 +3,36 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
-
-    // 1 -> 2 -> 3 <- 2 <- 1
-    // fast.next == null
-         //  dummy
-              //prev cur  next
-    // 1 -> 2  2 <- 1 
     public boolean isPalindrome(ListNode head) {
-        if (head == null || head.next == null) return true;
+        /**
+            1. go to mid
+            2. find even or odd
+            3. break the linkedList
+            4. reverse the second half of the linkedlist
+            6. check the palindrome
 
+                 s
+                      f
+            1 -> 2 -> 2 -> 1
+
+                      s
+                                f
+            1 -> 2 -> 2 -> 1 -> 5
+
+            s
+            f
+            1
+
+            s
+            f
+            1 -> 2
+         */
         ListNode slow = head;
         ListNode fast = head;
         while (fast.next != null && fast.next.next != null) {
@@ -23,39 +40,42 @@ class Solution {
             fast = fast.next.next;
         }
 
-        ListNode mid = slow;
-        ListNode start1 = head;
-        ListNode start2 = null;
-        
-        // odd
-        if (fast.next == null) {
-            start2 = reverse(mid);
-        } else {
-            start2 = reverse(mid.next);
-            slow.next = null;
-        }
+        ListNode newHead = slow.next;
+        slow.next = null;
 
-        while (start1 != null && start2 != null) {
-            if (start1.val != start2.val) return false;
-            start1 = start1.next;
-            start2 = start2.next;
-        }
-        
-        if (start1 != null && start2 == null) return false;
-        if (start2 != null && start1 == null) return false;
-        return true;
+        newHead = reverse(newHead, null);
+        return checkPalindrome(head, newHead);
     }
 
-    private ListNode reverse(ListNode node) {
-        ListNode prev = node;
-        ListNode cur = node.next;
-        while (cur != null) {
-            ListNode next = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = next;
+    private ListNode findMid(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        node.next = null;
-        return prev;
+
+        return slow;
     }
+
+    private ListNode reverse(ListNode node, ListNode prev) {
+        if (node == null) return prev;
+
+        ListNode newHead = reverse(node.next, node);
+        node.next = prev;
+        return newHead;
+    }
+
+    private boolean checkPalindrome(ListNode node1, ListNode node2) {
+        if (node1 == null && node2 == null) return true;
+        // trick -> this needs to be true to handle special case for odd
+        // e.g. 1 -> 2 -> 3 -> 2 -> 1
+        //      1 -> 2 -> 3 compare 1 -> 2
+        //      3 compare null return true
+        if (node1 == null || node2 == null) return true;
+        if (node1.val != node2.val) return false;
+
+        return checkPalindrome(node1.next, node2.next);
+    }
+
 }

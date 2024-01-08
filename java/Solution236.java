@@ -18,10 +18,7 @@ class Solution {
         TreeNode left = helper(node.left, p, q);
         TreeNode right = helper(node.right, p, q);
 
-        if (left != null && right != null) {
-            return node;
-        }
-
+        if (left != null && right != null) return node;
         if (left != null) return left;
         if (right != null) return right;
 

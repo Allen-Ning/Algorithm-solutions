@@ -1,20 +1,16 @@
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> results = new ArrayList();
-        helper(nums, 0, results, new ArrayList());
+        helper(results, new ArrayList<Integer>(), nums, 0);
         return results;
     }
 
-    private void helper(int[] nums, int index, List<List<Integer>> results, List<Integer> result) {
-        List<Integer> clone = new ArrayList();
-        for (Integer num : result) clone.add(num);
-        results.add(clone);
+    private void helper(List<List<Integer>> results, List<Integer> result, int[] nums, int start) {
+        results.add(new ArrayList<Integer>(result));
 
-        if (index >= nums.length) return;
-
-        for (int i = index; i < nums.length; i++) {
+        for (int i = start; i < nums.length; i++) {
             result.add(nums[i]);
-            helper(nums, i + 1, results, result);
+            helper(results, result, nums, i + 1);
             result.remove(result.size() - 1);
         }
     }

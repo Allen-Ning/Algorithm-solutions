@@ -4,24 +4,41 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
-  ArrayList<Integer> list;
+    public List<Integer> rightSideView(TreeNode root) {
+        /**
+            dfs + level protection result
+                    1
+                2       3
+            4     5
 
-  public List<Integer> rightSideView(TreeNode root) {
-    list= new ArrayList();
-    helper(root, 0);
-    return list;
-  }
+                  1
+              2       3
 
-  private void helper(TreeNode node, int level) {
-    if (node == null) return;
+                  1
+              2       3
+            4
+         */
+        List<Integer> result = new ArrayList();
+        helper(result, root, 0);
+        return result;
+    }
 
-    if (level == list.size()) { list.add(node.val); }
+    private void helper(List<Integer> result, TreeNode node, int level) {
+        if (node == null) return;
+        // trick -> here is the most tricky part of this question to find the most right node
+        if (result.size() <= level) result.add(node.val);
 
-    helper(node.right, level + 1);
-    helper(node.left, level + 1);
-  }
+        helper(result, node.right, level + 1);
+        helper(result, node.left, level + 1);
+    }
 }

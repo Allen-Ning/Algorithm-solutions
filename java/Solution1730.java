@@ -1,37 +1,30 @@
 class Solution {
     public int getFood(char[][] grid) {
-        boolean[][] isVisited = new boolean[grid.length][grid[0].length];
-        int[] startPoint = findStartPoint(grid);
-        Queue<int[]> queue = new LinkedList();
+        int[] startingPoint = findLocation(grid);
+        Queue<int[]> pq = new LinkedList<>();
+        pq.offer(new int[] {startingPoint[0], startingPoint[1]});
 
-        queue.offer(startPoint);
-        isVisited[startPoint[0]][startPoint[1]] = true;
         int step = 0;
-        int[][] directions = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        int[][] dirs = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+        while (pq.size() > 0) {
+            int size = pq.size();
+            for (int z = 0; z < size; z++) {
+                int[] location = pq.poll();
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                int[] current = queue.poll();
-                for (int[] direction : directions) {
-                    int x = current[0] + direction[0];
-                    int y = current[1] + direction[1];
+                for (int[] dir : dirs) {
+                    int nextX = dir[0] + location[0];
+                    int nextY = dir[1] + location[1];
 
-                    if (x < 0 ||
-                        x >= grid.length ||
-                        y < 0 ||
-                        y >= grid[0].length ||
-                        isVisited[x][y] ||
-                        grid[x][y] == '*' ||
-                        grid[x][y] == 'X'
-                    ) {
-                        continue;
-                    }
+                    if (nextX < 0 ||
+                        nextX >= grid.length ||
+                        nextY < 0 ||
+                        nextY >= grid[0].length ||
+                        grid[nextX][nextY] == 'X'
+                    ) continue;
 
-                    if (grid[x][y] == '#') return step + 1;
-
-                    queue.offer(new int[] {x, y});
-                    isVisited[x][y] = true;
+                    pq.offer(new int[]{nextX, nextY});
+                    if (grid[nextX][nextY] == '#') return step + 1;
+                    grid[nextX][nextY] = 'X';
                 }
             }
             step++;
@@ -39,10 +32,11 @@ class Solution {
         return -1;
     }
 
-    private int[] findStartPoint(char[][] grid) {
+    private int[] findLocation(char[][] grid) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] != '*') continue;
+                grid[i][j] = 'X';
                 return new int[]{i, j};
             }
         }

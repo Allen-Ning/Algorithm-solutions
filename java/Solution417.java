@@ -1,5 +1,10 @@
 class Solution {
   public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+    // trick -> cannot use dp
+    // [1,2,3]
+    // [8,9,4]
+    // [7,6,5]
+    //  6 -> 5 -> 4 -> 3
     List<List<Integer>> results = new ArrayList();
     if (matrix == null || matrix.length == 0) return results;
 

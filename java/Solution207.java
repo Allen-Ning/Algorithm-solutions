@@ -1,46 +1,45 @@
 class Solution {
-    // trick -> topologic sort = indegree + bfs
+    //  trick -> topologic sort = map + indegree + bfs
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        if (numCourses == 0 || prerequisites.length == 0) return true;
-
-        // preprocesing
-        HashMap<Integer, List<Integer>> courses = new HashMap();
+        // trick -> counter is enough to check if we can finish all courses
+        //          no need an extra hash set to check if we have visited this course
+        int counter = 0;
         int[] indegrees = new int[numCourses];
-
+        Set[] map = new HashSet[numCourses];
         for (int[] prerequisite : prerequisites) {
-            int first = prerequisite[1];
-            int second = prerequisite[0];
-            indegrees[second]++;
+            int course = prerequisite[0];
+            int preCourse = prerequisite[1];
 
-            List<Integer> nextCourses = courses.getOrDefault(first, new ArrayList());
-            nextCourses.add(second);
-            courses.put(first, nextCourses);
+            indegrees[course] += 1;
+            Set<Integer> set = map[preCourse];
+            if (set == null) {
+                set = new HashSet();
+                map[preCourse] = set;
+            }
+            set.add(course);
         }
 
         Queue<Integer> queue = new LinkedList();
-        int counter = 0;
-        boolean[] isVisited = new boolean[numCourses];
-        int firstCourse = -1;
-        for (int i = 0; i < indegrees.length; i++) {
-            if (indegrees[i] != 0) continue;
+        for (int i = 0; i < numCourses; i++) {
+            int indegree = indegrees[i];
+            if (indegree > 0) continue;
+
             queue.offer(i);
+            counter++;
         }
 
         while (queue.size() > 0) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
-                // trick -> syntax
                 Integer course = queue.poll();
-                isVisited[course] = true;
-                counter++;
-                List<Integer> nextCourses = courses.get(course);
-
+                Set<Integer> nextCourses = map[course];
                 if (nextCourses == null) continue;
-                for (int nextCourse : nextCourses) {
-                    if (isVisited[nextCourse]) continue;
-                    indegrees[nextCourse]--;
 
-                    if (indegrees[nextCourse] == 0) queue.offer(nextCourse);
+                for (Integer nextCourse : nextCourses) {
+                    if (--indegrees[nextCourse] > 0) continue;
+
+                    queue.offer(nextCourse);
+                    counter++;
                 }
             }
         }

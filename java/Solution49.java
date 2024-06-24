@@ -1,21 +1,21 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        List<List<String>> results = new ArrayList();
-        HashMap<String, List<String>> map = new HashMap();
+        Map<String, List<String>> map = new HashMap();
         for (String str : strs) {
-            char[] chars = str.toCharArray();
-            Arrays.sort(chars);
-            String key = new String(chars);
+            char[] letters = new char[26];
+            // trick -> this is to record how many times for each char from 'a' to 'z'
+            for (char c : str.toCharArray()) letters[c - 'a'] += 1;
+            String key = new String(letters);
 
-            List<String> result = map.getOrDefault(key, new ArrayList());
-            result.add(str);
-            map.put(key, result);
+            List<String> list = map.getOrDefault(key, new ArrayList());
+            list.add(str);
+            map.put(key, list);
         }
 
-        // easy to forget about syntax for loop map
-        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-            List<String> result = entry.getValue();
-            results.add(result);
+        List<List<String>> results = new ArrayList();
+        // trick -> syntax keySet();
+        for (String key : map.keySet()) {
+            results.add(map.get(key));
         }
         return results;
     }

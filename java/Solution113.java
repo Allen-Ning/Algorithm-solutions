@@ -4,31 +4,31 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
-    int expectedSum;
-    List<List<Integer>> result;
-    public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        this.expectedSum = sum;
-        List<Integer> list = new ArrayList();
-        result = new ArrayList();
-        helper(root, list, 0);
-        return result;
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> results = new ArrayList();
+        List<Integer> result = new ArrayList();
+        helper(results, targetSum, root, result, 0);
+        return results;
     }
 
-    private void helper(TreeNode node, List<Integer> list, int sum) {
-        if (node == null) {
-            return;
-        }
-        list.add(node.val);
-        if (node.left == null && node.right == null && expectedSum == (sum + node.val)) {
-            result.add(new ArrayList(list));
-        }
-        helper(node.left, list, sum + node.val);
-        helper(node.right, list, sum + node.val);
-        list.remove(list.size() -1);
-        return;
+    private void helper(List<List<Integer>> results, int targetSum, TreeNode node, List<Integer> result, int currentSum) {
+        if (node == null) return;
+
+        result.add(node.val);
+        if (node.left == null && node.right == null && currentSum + node.val == targetSum) results.add(new ArrayList(result));
+
+        helper(results, targetSum, node.left, result, currentSum + node.val);
+        helper(results, targetSum, node.right, result, currentSum + node.val);
+        result.remove(result.size() - 1);
     }
 }

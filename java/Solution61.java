@@ -1,42 +1,40 @@
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
-
-class Solution61 {
-
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
     public ListNode rotateRight(ListNode head, int k) {
-        if (head == null || head.next == null || k == 0) return head;
-        ListNode nextNode = head.next;
-        int size = 1;
-        while (nextNode != null) {
-            nextNode = nextNode.next;
-            size += 1;
-        }
+        if (head == null || head.next == null) return head;
 
-        int move = k % size;
-        if (move == 0) return head;
-        int count = 1;
         ListNode current = head;
-        ListNode change = null;
-        ListNode preChange = null;
-        while (current != null) {
-            if (count == size - move) {
-                preChange = current;
-            } else if (count == size - move + 1) {
-                change = current;
-            }
-
-            if (count == size) {
-                current.next   = head;
-                preChange.next = null;
-                break;
-            }
-
-            current = current.next;
+        int count = 1;
+        while (current.next != null) {
             count++;
+            current = current.next;
         }
-        return change;
+        ListNode tail = current;
+
+        k %= count;
+        // special case - k is 0, which means no need to do anything
+        if (k == 0) return head;
+
+        int breakCounter = count - k - 1;
+        current = head;
+        while (breakCounter > 0) {
+            breakCounter--;
+            current = current.next;
+        }
+
+        ListNode newHead = current.next;
+        current.next = null;
+
+        tail.next = head;
+        return newHead;
     }
 }

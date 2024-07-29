@@ -4,41 +4,59 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
     public int widthOfBinaryTree(TreeNode root) {
+       /**
+            trick ->
+            childIndex = parentIndex * 2 or parentIndex * 2 + 1
+            max = (lastIndex - firstIndex + 1) in the same row
+        */
         if (root == null) return 0;
+        long result = 0;
+        Queue<Node> queue = new LinkedList();
+        queue.offer(new Node(root, 0L));
 
-        HashMap<TreeNode, Integer> map = new HashMap();
-        Queue<TreeNode> queue = new LinkedList();
-        queue.offer(root);
-        map.put(root, 0);
+        while (queue.size() > 0) {
+            int size = queue.size();
+            long min = Long.MAX_VALUE;
+            long max = Long.MIN_VALUE;
+            for (int i = 0; i < size; i++) {
+                Node data = queue.poll();
+                TreeNode node = data.node;
+                long index = data.index;
 
-        int result = 0;
-        while (!queue.isEmpty()) {
-          int size = queue.size();
-          int start = 0;
-          int end = 0;
-          for (int i = 0; i < size; i++) {
-            TreeNode node = queue.poll();
-            if (i == 0) start = map.get(node);
-            if (i == size - 1) end = map.get(node);
+                min = Math.min(min, index);
+                max = Math.max(max, index);
 
-            int nodeIndex = map.get(node);
-            if (node.left != null) {
-              queue.offer(node.left);
-              map.put(node.left, 2 * nodeIndex);
+                if (node.left != null) {
+                    queue.offer(new Node(node.left, index * 2));
+                }
+                if (node.right != null) {
+                    queue.offer(new Node(node.right, index * 2 + 1));
+                }
             }
 
-            if (node.right != null) {
-              queue.offer(node.right);
-              map.put(node.right, 2 * nodeIndex + 1);
-            }
-          }
-          result = Math.max(result, end - start + 1);
+            result = Math.max(max - min + 1, result);
         }
-        return result;
-  }
+        return (int)result;
+    }
+
+    class Node {
+        TreeNode node;
+        long index;
+
+        public Node(TreeNode node,long index) {
+            this.node = node;
+            this.index = index;
+        }
+    }
 }

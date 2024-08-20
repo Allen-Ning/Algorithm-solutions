@@ -36,3 +36,34 @@ class Solution {
         helper(l1, l2, current, temp / 10);
     }
 }
+
+class Solution2 {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+        int carry = 0;
+
+        while (l1 != null || l2 != null) {
+            int value = carry;
+            if (l1 != null) {
+                value += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                value += l2.val;
+                l2 = l2.next;
+            }
+
+            carry = value / 10;
+
+            current.next = new ListNode(value % 10);
+            current = current.next;
+        }
+
+        if (carry != 0) {
+            current.next = new ListNode(carry);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+}

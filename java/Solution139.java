@@ -4,7 +4,7 @@ class Solution {
         for (String word : wordDict) set.add(word);
 
         // trick -> dp indicdats if the string with the given length has shown in wordDict
-        //          e.g 
+        //          e.g
         //          0 1 2 3 4 5 6 7
         //          l e e t c o d e
         //          dp[0] means empty string
@@ -14,7 +14,7 @@ class Solution {
         dp[0] = true;
         for (int i = 1; i <= s.length(); i++) {
             for (int j = i - 1; j >= 0; j--) {
-                if (dp[j] && set.contains(s.substring(j, i))) {   
+                if (dp[j] && set.contains(s.substring(j, i))) {
                     dp[i] = true;
                     break;
                 }

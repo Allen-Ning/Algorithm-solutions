@@ -6,12 +6,14 @@ class Solution {
             //          e.g -201 % 10 = -1
             int reminder = x % 10;
             x /= 10;
-            int newResult = result * 10 + reminder;
+
+            int preResult = result;
+            result = result * 10 + reminder;
+
             // trick -> revere the operation and check if we can get the original result from the new result
             //          if overflow, we cannot get the original result from the new result
             //          if not overflow, we can get the original result from the new result
-            if ((newResult - reminder) / 10 != result) return 0;    
-            result = newResult;
+            if (result / 10 != preResult) return 0;
         }
         return result;
     }

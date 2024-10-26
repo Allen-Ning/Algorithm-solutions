@@ -2,7 +2,7 @@ class RandomizedSet {
 
     HashMap<Integer, Integer> map;
     List<Integer> list;
-    Random random; 
+    Random random;
 
     public RandomizedSet() {
         map = new HashMap();
@@ -27,13 +27,15 @@ class RandomizedSet {
         list.set(index, last);
         // trick -> we need to update the last element index
         map.put(last, index);
+
         map.remove(val);
         // trick -> forget api how to remove last in arraylist
         list.remove(list.size() - 1);
         return true;
     }
-    
+
     public int getRandom() {
+        // trick -> this random syntax nextInt(num) -> [0, num)
         int index = random.nextInt(list.size());
         return list.get(index);
     }

@@ -1,32 +1,30 @@
-// trick -> This question is very hard to implement.  It might have to list all the corner case.
+// trick -> This question is very hard to implement. It might have to list all the corner case.
+//          There are 3 parts:
+//          intervals - mergedIntervals - intervals
+//
+//          The corner case - the intervals is empty
 class Solution {
     public int[][] insert(int[][] intervals, int[] newInterval) {
-        ArrayList<int[]> results = new ArrayList();
+        List<int[]> results = new ArrayList();
+        int i = 0;
+        while (i < intervals.length && intervals[i][1] < newInterval[0]) {
+            results.add(intervals[i++]);
+        }
 
         int start = newInterval[0];
         int end = newInterval[1];
-        int[] mergedResult = newInterval;
-
-        for (int[] interval : intervals) {
-            if (interval[1] < newInterval[0]) {
-                results.add(interval);
-            } else if (newInterval[1] < interval[0]) {
-                if (mergedResult != null) {
-                    results.add(mergedResult);
-                    mergedResult = null;
-                }
-                results.add(interval);
-            } else {
-                start = Math.min(start, Math.min(interval[0], newInterval[0]));
-                end = Math.max(end, Math.max(interval[1], newInterval[1]));
-                mergedResult = new int[] {start, end};
-            }
+        while (i < intervals.length && intervals[i][0] <= newInterval[1]) {
+            start = Math.min(intervals[i][0], start);
+            end = Math.max(intervals[i][1], end);
+            i++;
         }
+        results.add(new int[] {start, end});
 
-        if (mergedResult != null) results.add(mergedResult);
+        while (i < intervals.length) results.add(intervals[i++]);
+
         int[][] finalResults = new int[results.size()][2];
-        for (int i = 0; i < results.size(); i++) {
-            finalResults[i] = results.get(i); 
+        for (int j = 0; j < results.size(); j++) {
+            finalResults[j] = results.get(j);
         }
         return finalResults;
     }

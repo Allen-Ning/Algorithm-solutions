@@ -1,27 +1,27 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (e1, e2) -> e1[0] - e2[0]);
-
-        ArrayList<int[]> list = new ArrayList();
+        Arrays.sort(intervals, (num1, num2) -> num1[0] == num2[0] ? num1[1] - num2[1] : num1[0] - num2[0]);
+        List<int[]> results = new ArrayList();
         int[] prev = intervals[0];
+        // trick -> add the prev to results first and merge the new interval to prev if needed
+        results.add(prev);
+
         for (int i = 1; i < intervals.length; i++) {
             int[] current = intervals[i];
-
+            // not merge
             if (prev[1] < current[0]) {
-                list.add(prev);
                 prev = current;
-            } else {
-                // trick -> we need max here for the end
-                prev[1] = Math.max(prev[1], current[1]);
+                results.add(current);
+                continue;
             }
+
+            prev[1] = Math.max(current[1], prev[1]);
         }
 
-        // trick -> easy to forget to add the last element
-        list.add(prev);
-        int[][] results = new int[list.size()][2];
-        for (int i = 0; i < list.size(); i++) {
-            results[i] = list.get(i);
+        int[][] finalResults = new int[results.size()][2];
+        for (int i = 0; i < results.size(); i++) {
+            finalResults[i] = results.get(i);
         }
-        return results;
+        return finalResults;
     }
 }

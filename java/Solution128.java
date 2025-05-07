@@ -4,8 +4,11 @@ class Solution {
         for (int num : nums) set.add(num);
 
         int result = 0;
+        // trick -> loop through the set not original array to reduce time
         for (int num : set) {
-            if (set.contains(num - 1)) continue;    
+            // trick -> this is only find the low boundary of the sequence
+            //          given there is no need to find both low boudary and high boundray
+            if (set.contains(num - 1)) continue;
 
             int low = num;
             int high = num;

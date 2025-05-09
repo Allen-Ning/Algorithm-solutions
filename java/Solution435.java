@@ -1,8 +1,12 @@
 class Solution {
     public int eraseOverlapIntervals(int[][] intervals) {
         if (intervals == null || intervals.length == 0) return 0;
-        // trick -> sort by end to make it more clear to understand
-        //          the idea is to make the end as smaller as possible to fit in more interval
+        // trick -> We need to sort the end time rather than the start time. This approach works because:
+        //          1. By sorting by end time, we maximize the room for future intervals
+        //          2. When faced with overlapping intervals, we always choose the one that ends earlier
+
+        //  one of the example is below:
+        //  [-63,2], [-62, -49], [1, 2]
         Arrays.sort(intervals, (a, b) -> a[1] - b[1] == 0 ? a[0] - b[0] : a[1] - b[1]);
 
         int[] prev = intervals[0];

@@ -23,6 +23,14 @@ class RandomizedSet {
         Integer index = map.get(val);
         int last = list.get(list.size() - 1);
 
+        // trick -> To achieve O(1) deletion from an ArrayList, swap the target
+        // element with the last element, then remove the last element.
+        //
+        // This approach works for all cases:
+        //   - [7, 9] delete 9 -> 9 is already last, just remove it
+        //   - [9]    delete 9 -> single element, just remove it
+        //   - [9, 7] delete 9 -> swap 9 with 7, then remove last
+
         // trick -> don't forget to update both list and map for val and last
         list.set(index, last);
         // trick -> we need to update the last element index

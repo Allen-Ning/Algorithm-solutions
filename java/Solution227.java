@@ -1,36 +1,44 @@
 class Solution {
   public int calculate(String s) {
+    // trick -> trim spaces to avoid edge case "1 + 2 " to make sure the last
+    // character always being evaluated
+    s = s.trim();
     // trick -> sign is actually prev-sign
-    char sign = '+';
+    char evalSign = '+';
     int num = 0;
+    int i = 0;
     Stack<Integer> stack = new Stack();
-    String modifiedS = s.trim();
-    for (int i = 0; i < modifiedS.length(); i++) {
-      char c = modifiedS.charAt(i);
-      if (c == ' ') continue;
+    while (i < s.length()) {
+      char c = s.charAt(i);
+      if (c == ' ') {
+        i++;
+        continue;
+      }
 
-      if ('0' <= c && c <= '9') num = num * 10 + (c - '0');
-
+      if (c >= '0' && c <= '9')
+        num = num * 10 + c - '0';
       // trick -> not do forget to trigger this when string reaching the end
-      if (c > '9' || c < '0' || (i == modifiedS.length() -1)){
-        if (sign == '+') {
+      if ((c < '0' || c > '9') || i == s.length() - 1) {
+        // operator
+        if (evalSign == '+') {
           stack.push(num);
-        } else if (sign == '-') {
-          stack.push(-num);
-        } else if (sign == '*') {
-           stack.push(stack.pop() * num);
-        } else if (sign == '/') {
+        } else if (evalSign == '-') {
+          stack.push(num * -1);
+        } else if (evalSign == '*') {
+          stack.push(stack.pop() * num);
+        } else if (evalSign == '/') {
           stack.push(stack.pop() / num);
         }
-        sign = c;
+        evalSign = c;
         num = 0;
       }
+      i++;
     }
 
-    int total = 0;
-    for (Integer n : stack) {
-      total += n;
+    long result = 0;
+    while (stack.size() > 0) {
+      result += stack.pop();
     }
-    return total;
+    return (int) result;
   }
 }

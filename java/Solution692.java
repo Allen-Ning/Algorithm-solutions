@@ -1,48 +1,45 @@
 class Solution {
     public List<String> topKFrequent(String[] words, int k) {
-        List<String> finalResults = new ArrayList();
-        if (words == null || words.length == 0 || k == 0) return finalResults;
-
-        HashMap<String, Integer> map = new HashMap();
-        for (String word : words) {
-            if (map.containsKey(word)) {
-                map.put(word, map.get(word) + 1);
-            } else {
-                map.put(word, 1);
-            }
+        Map<String, Integer> map = new HashMap();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
 
-        PriorityQueue<Word> queue = new PriorityQueue<Word>((a, b) -> check(a, b));
-        for (Map.Entry<String, Integer> each : map.entrySet()) {
-            String word = each.getKey();
-            int freqency = each.getValue();
+        /**
+         * Trick -> the PriorityQueue comparator defines what come out of the heap
+         * first,
+         *
+         * Since we are keeping a min-heap of size k:
+         * - Lower frequency should come first (easier to remove).
+         * - If frequencies tie, lexicographically larger word should come first
+         * (because lexicographically smaller word has higher priority in result).
+         */
+        Queue<Item> minHeap = new PriorityQueue<Item>(
+                (i1, i2) -> i1.freq - i2.freq == 0 ? -1 * i1.word.compareTo(i2.word) : i1.freq - i2.freq);
 
-            queue.offer(new Word(word, freqency));
-            if (queue.size() > k) queue.poll();
+        // trick -> forget the syntax map.keySet()n to get all keys
+        for (String word : map.keySet()) {
+            minHeap.offer(new Item(word, map.get(word)));
+
+            if (minHeap.size() > k)
+                minHeap.poll();
         }
 
-        List<Word> results = new ArrayList();
-        while (!queue.isEmpty())  results.add(queue.poll());
-
-        for (int i = results.size() - 1; i >= 0; i--) {
-            finalResults.add(results.get(i).word);
+        List<String> results = new LinkedList();
+        while (minHeap.size() > 0) {
+            results.addFirst(minHeap.poll().word);
         }
-        return finalResults;
+        return results;
     }
 
-    // trick -> after sorting, lower frequence with higher alphabetical show in top of heap
-    public int check(Word a, Word b) {
-        return a.freq == b.freq ? -a.word.compareTo(b.word) : (a.freq - b.freq);
+    class Item {
+        String word;
+        int freq;
+
+        public Item(String word, int freq) {
+            this.word = word;
+            this.freq = freq;
+        }
     }
-}
-
-class Word {
-    String word;
-    int freq;
-
-    public Word(String word, int freq) {
-        this.word = word;
-        this.freq = freq;
-    }
-
 }

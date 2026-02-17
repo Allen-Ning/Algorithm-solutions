@@ -1,36 +1,38 @@
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ *   int val;
+ *   TreeNode left;
+ *   TreeNode right;
+ *   TreeNode() {}
+ *   TreeNode(int val) { this.val = val; }
+ *   TreeNode(int val, TreeNode left, TreeNode right) {
+ *     this.val = val;
+ *     this.left = left;
+ *     this.right = right;
+ *   }
  * }
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
         /**
-            dfs
-
-            in-order traversal
-        */
-        List<Integer> result = new ArrayList();
-        helper(result, root, k);
-        return result.get(k - 1);
+         * trick -> An in-order traversal of a binary search tree (BST) returns all the
+         * node values in ascending sorted order
+         */
+        int[] result = new int[] { 1, -1 };
+        helper(root, result, k);
+        return result[1];
     }
 
-    private void helper(List<Integer> result, TreeNode node, int k) {
-        if (node == null) return;
-        if (result.size() >= k) return;
+    private void helper(TreeNode node, int[] result, int k) {
+        if (node == null)
+            return;
 
-        helper(result, node.left, k);
-        result.add(node.val);
-        helper(result, node.right, k);
+        helper(node.left, result, k);
+        if (result[0] == k)
+            result[1] = node.val;
+        result[0] += 1;
+
+        helper(node.right, result, k);
     }
 }

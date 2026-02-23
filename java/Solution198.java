@@ -1,16 +1,24 @@
 class Solution {
     public int rob(int[] nums) {
-        int[] rob = new int[nums.length];
-        int[] notRob = new int[nums.length];
-        rob[0] = nums[0];
-
+        int result = nums[0];
+        int rob = nums[0];
+        int skip = 0;
         for (int i = 1; i < nums.length; i++) {
-            rob[i] = notRob[i - 1] + nums[i];
-            // trick ->  [2, 1, 1,           2]
-            //         r  2  1  3            4
-            //         n  0  2  2 max(1, 2)  3
-            notRob[i] = Math.max(rob[i - 1], notRob[i - 1]);
+            int preRob = rob;
+            int preSkip = skip;
+
+            rob = preSkip + nums[i];
+            // trick -> you could keep skipping multiple houses
+            // e.g. 1. steal the first house and then
+            // 2. skip the second one and the third one
+            // 3. steal the last house.
+            // [ 2, 1, 1, 2]
+            // r 2 1 3 4
+            // s 0 2 2 3
+            skip = Math.max(preRob, preSkip);
+
+            result = Math.max(Math.max(rob, skip), result);
         }
-        return Math.max(rob[nums.length - 1], notRob[nums.length - 1]);
+        return result;
     }
 }

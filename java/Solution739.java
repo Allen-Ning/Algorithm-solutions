@@ -5,10 +5,12 @@ class Solution {
         for (int i = 0; i < temperatures.length; i++) {
             int temperature = temperatures[i];
 
-            while (stack.size() > 0 && temperatures[stack.peek()] < temperature) {
+            // trick -> we need to maintain a decreasing stack
+            while (stack.size() > 0 && temperature > temperatures[stack.peek()]) {
                 int index = stack.pop();
                 result[index] = i - index;
             }
+
             stack.push(i);
         }
         return result;

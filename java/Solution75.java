@@ -1,24 +1,32 @@
 class Solution {
     public void sortColors(int[] nums) {
-        int p1 = 0; 
-        int p2 = nums.length - 1;
+        /**
+         * trick -> define 3 pointers: i, j, z
+         * 1. index < i, 0
+         * 2. index > j, 2
+         * 3. in-between [i, j], 1
+         */
         int i = 0;
-        while (i <= p2) {
-            int num = nums[i];
+        int j = nums.length - 1;
+        int z = 0;
+        while (z <= j) {
+            int num = nums[z];
             if (num == 0) {
-                swop(nums, p1++, i++);
-            } else if (num == 2) {
-                // trick -> after swop with p2, double check the current i
-                swop(nums, p2--, i);
-            } else {
+                swop(nums, z, i);
                 i++;
+                z++;
+            } else if (num == 2) {
+                swop(nums, z, j);
+                j--;
+            } else {
+                z++;
             }
         }
     }
 
-    private void swop(int[] nums, int p1, int p2) {
-        int temp = nums[p1];
-        nums[p1] = nums[p2];
-        nums[p2] = temp;
+    private void swop(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }

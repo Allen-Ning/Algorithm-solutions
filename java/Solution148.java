@@ -3,57 +3,86 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public ListNode sortList(ListNode head) {
-        if (head == null) return head;
         return helper(head);
     }
 
     private ListNode helper(ListNode node) {
-        if (node == null || node.next == null) return node;
+        if (node == null) return null;
+        if (node.next == null) return node;
+        if (node.next.next == null) {
+            ListNode next = node.next;
+            if (node.val < next.val) return node;
 
-        ListNode mid = findMiddle(node);
-        ListNode node1 = node;
-        ListNode node2 = mid.next;
-        mid.next = null;
+            node.next = null;
+            next.next = node;
+            return next;
+        }
 
-        return merge(helper(node1), helper(node2));
+        ListNode leftHead = node;
+        ListNode rightHead = breakMiddile(node);
+        return merge(helper(leftHead), helper(rightHead));
     }
 
-    private ListNode findMiddle(ListNode node) {
-        ListNode slow = node;
-        ListNode fast = node;
+    /**
+     *                            f
+     *            s
+     *  d -> 4 -> 2 -> 1 -> 3 -> null
+     *
+     *                                 f
+     *                 s
+     *  d -> 4 -> 2 -> 1 -> 3 -> 6 -> null
+     */
+    private ListNode breakMiddile(ListNode node) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = node;
 
-        while (fast.next != null && fast.next.next != null) {
+        ListNode slow = dummy;
+        ListNode fast = dummy;
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
-        return slow;
+
+        ListNode newHead = slow.next;
+        slow.next = null;
+        return newHead;
     }
 
-    private ListNode merge(ListNode node1, ListNode node2) {
-        ListNode dummy = new ListNode(0);
-        ListNode node = dummy;
-        while (node1 != null && node2 != null) {
-            if (node1.val < node2.val) {
-                node.next = node1;
-                node1 = node1.next;
+    /**
+     *   n1
+     *   2 -> 4
+     *
+     *   n2
+     *   1 -> 3
+     *
+     *             c
+     *   d -> 1 -> 2
+     */
+    private ListNode merge(ListNode n1, ListNode n2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+        while (n1 != null && n2 != null) {
+            if (n1.val < n2.val) {
+                current.next = n1;
+                n1 = n1.next;
             } else {
-                node.next = node2;
-                node2 = node2.next;
+                current.next = n2;
+                n2 = n2.next;
             }
-            node = node.next;
-        }
-
-        ListNode current = (node1 == null ? node2 : node1);
-        while (current != null) {
-            node.next = current;
-            node = current;
             current = current.next;
         }
+
+        if (n1 != null)
+            current.next = n1;
+        if (n2 != null)
+            current.next = n2;
         return dummy.next;
     }
 }

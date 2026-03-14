@@ -23,10 +23,11 @@ class Solution {
         if (root == null) return 0;
         long result = 0;
         Queue<Node> queue = new LinkedList();
-        queue.offer(new Node(root, 0L));
+        queue.offer(new Node(root, 0));
 
         while (queue.size() > 0) {
             int size = queue.size();
+            // trick -> use long to avoid overflow
             long min = Long.MAX_VALUE;
             long max = Long.MIN_VALUE;
             for (int i = 0; i < size; i++) {
@@ -37,12 +38,8 @@ class Solution {
                 min = Math.min(min, index);
                 max = Math.max(max, index);
 
-                if (node.left != null) {
-                    queue.offer(new Node(node.left, index * 2));
-                }
-                if (node.right != null) {
-                    queue.offer(new Node(node.right, index * 2 + 1));
-                }
+                if (node.left != null) queue.offer(new Node(node.left, index * 2));
+                if (node.right != null) queue.offer(new Node(node.right, index * 2 + 1));
             }
 
             result = Math.max(max - min + 1, result);

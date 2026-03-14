@@ -17,18 +17,22 @@ class Solution {
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
         List<List<Integer>> results = new ArrayList();
         List<Integer> result = new ArrayList();
-        helper(results, targetSum, root, result, 0);
+        helper(root, targetSum, result, results);
         return results;
     }
 
-    private void helper(List<List<Integer>> results, int targetSum, TreeNode node, List<Integer> result, int currentSum) {
+    private void helper(TreeNode node, int targetSum, List<Integer> result, List<List<Integer>> results) {
         if (node == null) return;
 
         result.add(node.val);
-        if (node.left == null && node.right == null && currentSum + node.val == targetSum) results.add(new ArrayList(result));
+        // trick -> check this leaf node to add result to avoid adding duplicated results
+        // trick -> arraylist syntax to copy another arraylist
+        if (node.left == null && node.right == null && targetSum == node.val) results.add(new ArrayList(result));
 
-        helper(results, targetSum, node.left, result, currentSum + node.val);
-        helper(results, targetSum, node.right, result, currentSum + node.val);
+        helper(node.left, targetSum - node.val, result, results);
+        helper(node.right, targetSum - node.val, result, results);
+
+        // trick -> arraylist syntax to remove the last element
         result.remove(result.size() - 1);
     }
 }

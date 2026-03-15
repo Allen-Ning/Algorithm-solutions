@@ -1,34 +1,35 @@
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
         Stack<Integer> stack = new Stack();
-        for (int one : asteroids) {
-            if (stack.size() == 0) {
-                stack.push(one);
+        for (int i = 0; i < asteroids.length; i++) {
+            int asteroid = asteroids[i];
+            if (asteroid > 0) {
+                stack.push(i);
                 continue;
             }
 
-            boolean added = true;
-            while (stack.size() > 0 && stack.peek() > 0 && one < 0) {
-                Integer prev = stack.peek();
-                if (prev == -one) {
-                    stack.pop();
-                    added = false;
-                    break;
-                } else if (Math.abs(one) < Math.abs(prev)) {
-                    added = false;
-                    break;
-                } else {
-                    added = true;
-                    stack.pop();
-                }
+            // peak ->
+            // asteroid <-
+            // trick -> do the while loop first to make the logic more clear
+            //          the goal is to destroy the smaller asteroid in the stack as long as the current asteroid is larger
+            while (stack.size() > 0 && asteroids[stack.peek()] > 0 && asteroids[stack.peek()] < Math.abs(asteroid)) stack.pop();
+
+            if (stack.size() > 0 && asteroids[stack.peek()] > 0 && asteroids[stack.peek()] == Math.abs(asteroid)) {
+                stack.pop();
+                continue;
             }
-            if (added) stack.push(one);
+
+            if (stack.size() > 0 && asteroids[stack.peek()] > 0 && asteroids[stack.peek()] > Math.abs(asteroid)) {
+                continue;
+            }
+
+            stack.push(i);
         }
 
-        int[] result = new int[stack.size()];
-        for (int i = stack.size() - 1; i >= 0; i--) {
-            result[i] = stack.pop();
+        int[] results = new int[stack.size()];
+        for (int i = results.length - 1; i >= 0; i--) {
+            results[i] = asteroids[stack.pop()];
         }
-        return result;
+        return results;
     }
 }

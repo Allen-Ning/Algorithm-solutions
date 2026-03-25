@@ -4,36 +4,49 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        LinkedList<TreeNode> queue = new LinkedList();
-        ArrayList<List<Integer>> result = new ArrayList();
-        if (root == null) return result;
+        List<List<Integer>> results = new ArrayList();
+        if (root == null) return results;
 
-        queue.add(root);
-        int level = 0;
+        Queue<TreeNode> queue = new LinkedList();
+        queue.offer(root);
+
+        boolean flip = false;
         while (queue.size() > 0) {
             int size = queue.size();
-            LinkedList<Integer> levelList = new LinkedList();
+            // trick -> LinkedList allow to addFirst and addList with o(1)
+            // trick -> 1. reverse the order of the result at odd levels (1, 3, 5...) if root is level 0
+            //          2. use the generic approach to to level traversal
+            List<Integer> result = new LinkedList();
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
-
-                // trick -> linkedlist addFirst, addLast is o(1)
-                if (level % 2 == 0) {
-                    levelList.addLast(node.val);
-                } else {
-                    levelList.addFirst(node.val);
-                }
+                TreeNode left = node.left;
+                TreeNode right = node.right;
 
                 if (node.left != null) queue.offer(node.left);
                 if (node.right != null) queue.offer(node.right);
-             }
-          level += 1;
-          result.add(levelList);
+
+                // trick -> no need to change the traversal order,
+                //          and only need to change the the order of result
+                if (flip) {
+                    result.addFirst(node.val);
+                } else {
+                    result.addLast(node.val);
+                }
+            }
+            flip = !flip;
+            results.add(result);
         }
-        return result;
+        return results;
     }
 }

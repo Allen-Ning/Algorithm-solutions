@@ -11,14 +11,12 @@ class Solution {
             results.add(intervals[i++]);
         }
 
-        int start = newInterval[0];
-        int end = newInterval[1];
         while (i < intervals.length && intervals[i][0] <= newInterval[1]) {
-            start = Math.min(intervals[i][0], start);
-            end = Math.max(intervals[i][1], end);
+            newInterval[0]; = Math.min(intervals[i][0], newInterval[0];);
+            newInterval[1] = Math.max(intervals[i][1], newInterval[1]);
             i++;
         }
-        results.add(new int[] {start, end});
+        results.add(newInterval);
 
         while (i < intervals.length) results.add(intervals[i++]);
 

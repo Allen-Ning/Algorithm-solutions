@@ -1,45 +1,66 @@
 class Solution {
     public boolean isPalindrome(String s) {
-        int start = 0;
-        int end = s.length() - 1;
-        while (start < end) {
-            char c1 = s.charAt(start);
-            while (!alphanumeric(c1)) {
-                start++;
-                // trick -> when start reach the end, it means there no valid char
-                if (start > end) return true;
-                c1 = s.charAt(start);
-            }
+        int i = 0;
+        int j = s.length() - 1;
+        /**
+         * the trick -> for some case, i could be be same as j, but we cannot allow i >
+         * j because this will introduce over-searching
+         *
+         * There are 4 cases under 2 category
+         * 1. both i, j can find valid chars case 1, and case 2, case 3
+         * 2. both i, j cannot find valid chars case 4
+         *
+         * case1 -> i and j both can find equal valid chars
+         * 0, 1, 2, 3
+         * a c c a
+         * i j
+         * i
+         * j
+         *
+         * case2 -> i and j both can find non-equal valid chars
+         * 0, 1, 2, 3
+         * a c d a
+         * i j
+         * i
+         * j
+         *
+         * case3 -> when there is only one vaild char for both i and j
+         * 0, 1, 2 , 3, 4
+         * a ! b ! a
+         * i j
+         * i
+         * j
+         * case4 -> when there is no valid char for both i and j
+         * 0, 1, 2 , 3, 4
+         * a ! ! ! a
+         * i j
+         * i
+         * j
+         */
+        while (i < j) {
+            while (i < j && toValidChar(s.charAt(i)) == ' ')
+                i++;
 
-            char c2 = s.charAt(end);
-            while (!alphanumeric(c2)) {
-                end--;
-                // trick -> when end reach the start, it means there is a valid char for start
-                //          but no valid char for end
-                if (start > end) return false;
-                c2 = s.charAt(end);
-            }
+            while (i < j && toValidChar(s.charAt(j)) == ' ')
+                j--;
 
-            if (toSmallerLetter(c1) != toSmallerLetter(c2)) return false;
-            start++;
-            end--;
+            if (toValidChar(s.charAt(i)) != toValidChar(s.charAt(j)))
+                return false;
+            i++;
+            j--;
         }
         return true;
     }
 
-    private boolean alphanumeric(char c) {
-        if ((c >= '0' && c <= '9') ||
-            (c >= 'a' && c <= 'z') ||
-            (c >= 'A' && c <= 'Z')
-        ) return true;
-
-        return false;
-    }
-
-    private char toSmallerLetter(char c) {
-        if (c >= 'a' && c <= 'z') return c;
-        if (c >= 'A' && c <= 'Z') return (char)(c - 'A' + 'a');
-
-        return c;
+    private char toValidChar(char c) {
+        if ('a' <= c && c <= 'z') {
+            return c;
+        } else if ('A' <= c && c <= 'Z') {
+            return (char) ((c - 'A') + 'a');
+        } else if ('0' <= c && c <= '9') {
+            return c;
+        } else {
+            return ' ';
+        }
     }
 }

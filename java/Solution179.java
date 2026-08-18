@@ -1,37 +1,21 @@
 class Solution {
     public String largestNumber(int[] nums) {
-        String[] numbers = new String[nums.length];
-        for (int i = 0; i < nums.length; i++) numbers[i] = String.valueOf(nums[i]);
+        String[] results = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            results[i] = String.valueOf(nums[i]);
+        }
+        // trick -> comparing the nums char by char will not work.
+        //          e.g  3 vs 34 -> 334 < 343
+        //               3 vs 30 -> 330 > 303
+        Arrays.sort(results, (a, b) -> (b + a).compareTo(a + b));
 
-        Arrays.sort(numbers, (a, b) -> compare(a, b));
+        // trick -> This is to avoid corner case. If largest is "0", all nums are 0, avoid returning "000...""
+        if (results[0].equals("0")) return results[0];
 
         StringBuilder sb = new StringBuilder();
-        if (numbers[0].equals("0")) return numbers[0];
-        for (String num : numbers) sb.append(num);
+        for (int i = 0; i < results.length; i++) {
+            sb.append(results[i]);
+        }
         return sb.toString();
-    }
-    // [30, 3]
-    // num1 3
-    // num2 30
-    // concat 1 = 303
-    // concat 2 =  330
-    // -1
-    // [3, 30]
-
-    // [3, 30]
-    // num1 30
-    // num2 3
-    // concat 1 = 330
-    // concat 2 = 303
-    // 1
-    private int compare(String a, String b) {
-        // e.g a -> 10, b -> 2
-        // 102
-        String result1 = a + b;
-
-        // 210
-        String result2 = b + a;
-
-        return result2.compareTo(result1);
     }
 }

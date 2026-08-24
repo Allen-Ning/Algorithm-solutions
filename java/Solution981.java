@@ -1,4 +1,5 @@
 class TimeMap {
+    // trick -> special data structure
     private Map<String, TreeMap<Integer, String>> map;
 
     public TimeMap() {
@@ -15,6 +16,7 @@ class TimeMap {
         TreeMap<Integer, String> treeMap = map.get(key);
         if (treeMap == null) return "";
 
+	// trick -> remmeber this treemap functions - floorKey, ceilingKey, lowerKey and higherKey.
         Integer floorKey = treeMap.floorKey(timestamp);
         if (floorKey == null) return "";
         return treeMap.get(floorKey);
@@ -27,3 +29,4 @@ class TimeMap {
  * obj.set(key,value,timestamp);
  * String param_2 = obj.get(key,timestamp);
  */
+

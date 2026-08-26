@@ -62,9 +62,12 @@ class Solution2 {
 
         Node copyNode = new Node(node.val, new ArrayList<Node>());
         map.put(node, copyNode);
-        for (Node neighbour : node.neighbors ) {
-            copyNode.neighbors.add(helper(neighbour, map));
+
+        for (Node neighbour : node.neighbors) {
+            Node copyNeighbor = helper(neighbour, map);
+            copyNode.neighbors.add(copyNeighbor);
         }
         return copyNode;
     }
 }
+
